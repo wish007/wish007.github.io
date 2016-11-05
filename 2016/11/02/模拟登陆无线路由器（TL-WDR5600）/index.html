@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,爬虫,无线路由器," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Why最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。
+我已经打手头上这台 TP-LINK 的 WDR5600 主意很久了，趁着最近在学习 HTTP ，正好实现以前的一些想法。
+GitHub RepositoryGitHub - wish007/router
+Library
+Requests ：HTTP for Humans ，涉及到 HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模拟登陆无线路由器（TL-WDR5600）">
+<meta property="og:url" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="Why最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。
+我已经打手头上这台 TP-LINK 的 WDR5600 主意很久了，趁着最近在学习 HTTP ，正好实现以前的一些想法。
+GitHub RepositoryGitHub - wish007/router
+Library
+Requests ：HTTP for Humans ，涉及到 HTTP">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/登录界面.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/登录.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/stok.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数1.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数2.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/获取数据.png">
+<meta property="og:updated_time" content="2016-11-03T16:09:24.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模拟登陆无线路由器（TL-WDR5600）">
+<meta name="twitter:description" content="Why最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。
+我已经打手头上这台 TP-LINK 的 WDR5600 主意很久了，趁着最近在学习 HTTP ，正好实现以前的一些想法。
+GitHub RepositoryGitHub - wish007/router
+Library
+Requests ：HTTP for Humans ，涉及到 HTTP">
+<meta name="twitter:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/登录界面.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/"/>
+
+
+  <title> 模拟登陆无线路由器（TL-WDR5600） | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                模拟登陆无线路由器（TL-WDR5600）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-02T22:16:28+08:00" content="2016-11-02">
+              2016-11-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h1><p>最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。</p>
+<p>我已经打手头上这台 TP-LINK 的 WDR5600 主意很久了，趁着最近在学习 HTTP ，正好实现以前的一些想法。</p>
+<h1 id="GitHub-Repository"><a href="#GitHub-Repository" class="headerlink" title="GitHub Repository"></a>GitHub Repository</h1><p><a href="https://github.com/wish007/router" target="_blank" rel="external">GitHub - wish007/router</a></p>
+<h1 id="Library"><a href="#Library" class="headerlink" title="Library"></a>Library</h1><ul>
+<li><a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests</a> ：HTTP for Humans ，涉及到 HTTP 怎能少了它</li>
+<li><a href="https://docs.python.org/3.5/library/json.html" target="_blank" rel="external">json</a>：JSON 数据格式的编码和解码</li>
+<li><a href="https://docs.python.org/3.5/library/urllib.parse.html" target="_blank" rel="external">urllib.parse</a>：对 URL 编码进行解码</li>
+<li>Chrome开发者工具：调试 HTTP 请求、JavaScript 的利器</li>
+</ul>
+<a id="more"></a>
+<h1 id="How"><a href="#How" class="headerlink" title="How"></a>How</h1><p>既然无线路由器是通过 Web 页面登录的，那直接打开登录页面用Chrome开发者工具获取网络通信过程。</p>
+<ul>
+<li><p>输入 <a href="http://192.168.1.1" target="_blank" rel="external">http://192.168.1.1</a> 打开登录页面，现在有些无线路由器只需要密码就可以登录了，我手头上的就是这种：</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/登录界面.png" alt="登录界面.png" title="">
+<p>​</p>
+<p>输入密码<code>administrator</code>点登录开始抓包：</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/登录.png" alt="登录.png" title="">
+<p>​</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/stok.png" alt="stok.png" title="">
+<p>​</p>
+<p>在 Request Payload 可以很明显看到<code>{&quot;password&quot;:&quot;WaQ7xPr3L41vMwK&quot;}</code>，Response 返回<code>{ &quot;stok&quot;: &quot;b686b22c7a3f1c1fb983b0e30aa98fae&quot;, &quot;error_code&quot;: 0 }</code>，<code>password</code>应该就是我们要找密码字段，返回的<code>stok</code>相当于后续通信的<code>token</code>口令，<code>error_code</code>的值为<code>0</code>表示认证通过。</p>
+</li>
+<li><p>但是请求的<code>{&quot;password&quot;:&quot;WaQ7xPr3L41vMwK&quot;}</code>和真正的密码<code>administrator</code>完全不同，应该是对密码进行了加密处理，打开登录界面时加载了许多 JavaScript 文件，猜测可能是通过 JavaScript 来加密，切换到 Chrome 开发者工具的 Soures 标签页，尝试搜索<code>password</code>、<code>pwd</code>等密码相关的关键字，多试几次就可以找到加密代码，实在不行就设置断点单步查看登录涉及的代码。</p>
+<p>设置断点后在<code>orgAuthPwd</code>函数发现传入的<code>pwd</code>参数值为真实的密码<code>administrator</code>，最后返回一个带参数的<code>securityEncode</code>函数，继续运行可以看到变量<code>output</code>的值在一步步变为登录请求的<code>{&quot;password&quot;:&quot;WaQ7xPr3L41vMwK&quot;}</code></p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数1.png" alt="加密函数1.png" title="">
+<p>​</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数2.png" alt="加密函数2.png" title="">
+<p>​</p>
+<p>既然找到了加密代码，那就马上用 Python 重写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt_pwd</span><span class="params">(password)</span>:</span></div><div class="line">    input1 = <span class="string">"RDpbLfCPsJZ7fiv"</span></div><div class="line">    input3 = <span class="string">"yLwVl0zKqws7LgKPRQ84Mdt708T1qQ3Ha7xv3H7NyU84p21BriUWBU43odz3iP4rBL3cD02KZciXTysVXiV8ngg6vL48rPJyAUw0HurW20xqxv9aYb4M9wK1Ae0wlro510qXeU07kV57fQMc8L6aLgMLwygtc0F10a0Dg70TOoouyFhdysuRMO51yY5ZlOZZLEal1h0t9YQW0Ko7oBwmCAHoic4HYbUyVeU3sfQ1xtXcPcf1aT303wAQhv66qzW"</span></div><div class="line">    len1 = len(input1)</div><div class="line">    len2 = len(password)</div><div class="line">    dictionary = input3</div><div class="line">    lenDict = len(dictionary)</div><div class="line">    output = <span class="string">''</span></div><div class="line">    <span class="keyword">if</span> len1 &gt; len2:</div><div class="line">        length = len1</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        length = len2</div><div class="line">    index = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> index &lt; length:</div><div class="line">        <span class="comment"># 十六进制数 0xBB 的十进制为 187</span></div><div class="line">        cl = <span class="number">187</span></div><div class="line">        cr = <span class="number">187</span></div><div class="line">        <span class="keyword">if</span> index &gt;= len1:</div><div class="line">            <span class="comment"># ord() 函数返回字符的整数表示</span></div><div class="line">            cr = ord(password[index])</div><div class="line">        <span class="keyword">elif</span> index &gt;= len2:</div><div class="line">            cl = ord(input1[index])</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            cl = ord(input1[index])</div><div class="line">            cr = ord(password[index])</div><div class="line">        index += <span class="number">1</span></div><div class="line">        <span class="comment"># chr() 函数返回整数对应的字符</span></div><div class="line">        output = output + chr(ord(dictionary[cl ^ cr]) % lenDict)</div><div class="line">    <span class="keyword">return</span> output</div></pre></td></tr></table></figure>
+</li>
+<li><p>有了加密后的密码，顺理成章地将它作为 Payload 发送请求，返回的响应为 JSON 格式数据，通过 json 库解析获得 token：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">encryptPwd = <span class="string">'加密后的密码'</span></div><div class="line">url = <span class="string">'http://192.168.1.1/'</span></div><div class="line">headers = &#123;<span class="string">'Content-Type'</span>: <span class="string">'application/json; charset=UTF-8'</span>&#125;</div><div class="line">payload = <span class="string">'&#123;"method":"do","login":&#123;"password":"%s"&#125;&#125;'</span> % encryptPwd</div><div class="line">response = requests.post(url, data=payload, headers=headers)</div><div class="line">stok = json.loads(response.text)[<span class="string">'stok'</span>]</div></pre></td></tr></table></figure>
+</li>
+<li><p>获得 stok 后就可以将它加入请求 URL 中获取数据了；例如获取用户当前的上传速度、下载速度、限速信息等。返回的信息为 JSON 格式数据，可以解析做格式化处理增强可读性。</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/获取数据.png" alt="获取数据.png" title="">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">stok = json.loads(response.text)[<span class="string">'stok'</span>]</div><div class="line">headers = &#123;<span class="string">'Content-Type'</span>: <span class="string">'application/json; charset=UTF-8'</span>&#125;</div><div class="line">url = <span class="string">'%sstok=%s/ds'</span> % (<span class="string">'http://192.168.1.1/'</span>,stok)</div><div class="line">payload = <span class="string">'&#123;"hosts_info":&#123;"table":"host_info"&#125;,"method":"get"&#125;'</span></div><div class="line">response = requests.post(url, data=payload, headers=headers)</div></pre></td></tr></table></figure>
+<h1 id="More"><a href="#More" class="headerlink" title="More"></a>More</h1><p>根据上面的分析，发现整个过程的关键点有几个：</p>
+<ul>
+<li>请求参数</li>
+<li>密码加密函数</li>
+<li>获取 stok</li>
+</ul>
+<p>获取到 stok 可以做的事情就很多了，可以更改请求参数（具体参数要提前抓取）获取数据、操作路由器，有兴趣的可以根据我的代码自行拓展。</p>
+<p>​</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/爬虫/" rel="tag">#爬虫</a>
+          
+            <a href="/tags/无线路由器/" rel="tag">#无线路由器</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/" rel="next" title="用Requests和BeautifulSoup爬取妹子图">
+                <i class="fa fa-chevron-left"></i> 用Requests和BeautifulSoup爬取妹子图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/02/模拟登陆无线路由器（TL-WDR5600）/"
+           data-title="模拟登陆无线路由器（TL-WDR5600）" data-url="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Why"><span class="nav-number">1.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-Repository"><span class="nav-number">2.</span> <span class="nav-text">GitHub Repository</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Library"><span class="nav-number">3.</span> <span class="nav-text">Library</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How"><span class="nav-number">4.</span> <span class="nav-text">How</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#More"><span class="nav-number">5.</span> <span class="nav-text">More</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

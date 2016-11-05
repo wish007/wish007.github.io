@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,爬虫," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="前言其实这个爬虫程序已经写好大半年了，中途有做过一些修改，现在觉得有必要记录一下过程。
+说到爬虫，大多为了批量爬取各种信息，但我写这个爬虫的初衷倒不是为了妹子图片（虽然真的下载了不少妹子图片⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄，更多是为了练习 Python 算法和常用库，顺带还了解了 HTTP 请求的一些细节。
+工具介绍
+Requests ：用来发送 HTTP 请求，获取 HTTP 响应
+Beautif">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Requests和BeautifulSoup爬取妹子图">
+<meta property="og:url" content="http://yoursite.com/2016/09/10/用Requests和BeautifulSoup爬取妹子图/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="前言其实这个爬虫程序已经写好大半年了，中途有做过一些修改，现在觉得有必要记录一下过程。
+说到爬虫，大多为了批量爬取各种信息，但我写这个爬虫的初衷倒不是为了妹子图片（虽然真的下载了不少妹子图片⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄，更多是为了练习 Python 算法和常用库，顺带还了解了 HTTP 请求的一些细节。
+工具介绍
+Requests ：用来发送 HTTP 请求，获取 HTTP 响应
+Beautif">
+<meta property="og:image" content="http://yoursite.com/2016/09/10/用Requests和BeautifulSoup爬取妹子图/meizitu.png">
+<meta property="og:updated_time" content="2016-09-11T11:28:13.052Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Requests和BeautifulSoup爬取妹子图">
+<meta name="twitter:description" content="前言其实这个爬虫程序已经写好大半年了，中途有做过一些修改，现在觉得有必要记录一下过程。
+说到爬虫，大多为了批量爬取各种信息，但我写这个爬虫的初衷倒不是为了妹子图片（虽然真的下载了不少妹子图片⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄，更多是为了练习 Python 算法和常用库，顺带还了解了 HTTP 请求的一些细节。
+工具介绍
+Requests ：用来发送 HTTP 请求，获取 HTTP 响应
+Beautif">
+<meta name="twitter:image" content="http://yoursite.com/2016/09/10/用Requests和BeautifulSoup爬取妹子图/meizitu.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/10/用Requests和BeautifulSoup爬取妹子图/"/>
+
+
+  <title> 用Requests和BeautifulSoup爬取妹子图 | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                用Requests和BeautifulSoup爬取妹子图
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-10T16:58:47+08:00" content="2016-09-10">
+              2016-09-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/10/用Requests和BeautifulSoup爬取妹子图/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>其实这个爬虫程序已经写好大半年了，中途有做过一些修改，现在觉得有必要记录一下过程。</p>
+<p>说到爬虫，大多为了批量爬取各种信息，但我写这个爬虫的初衷倒不是为了妹子图片（虽然真的下载了不少妹子图片⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄，更多是为了练习 Python 算法和常用库，顺带还了解了 HTTP 请求的一些细节。</p>
+<h1 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h1><ul>
+<li><a href="http://docs.python-requests.org/zh_CN/latest/" target="_blank" rel="external">Requests</a> ：用来发送 HTTP 请求，获取 HTTP 响应</li>
+<li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/" target="_blank" rel="external">Beautiful Soup</a> ：从获取到的 HTML 文件中提取数据</li>
+<li>Chrome开发者工具：查看 HTTP 通信过程，读取 HTML 源码</li>
+</ul>
+<a id="more"></a>
+<h1 id="爬虫程序分析"><a href="#爬虫程序分析" class="headerlink" title="爬虫程序分析"></a>爬虫程序分析</h1><blockquote>
+<p>本爬虫程序的目标是爬取<a href="http://www.meizitu.com/" target="_blank" rel="external">妹子图(www.meizitu.com)</a>网站上的妹子图片，并按标题分类保存到本地计算机</p>
+</blockquote>
+<h2 id="GitHub-项目地址："><a href="#GitHub-项目地址：" class="headerlink" title="GitHub 项目地址："></a>GitHub 项目地址：</h2><p><a href="https://github.com/wish007/crawler" target="_blank" rel="external">GitHub - wish007/crawler</a></p>
+<p>爬取结果</p>
+<img src="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/meizitu.png" alt="meizitu.png" title="">
+<h2 id="爬虫程序分为5个函数："><a href="#爬虫程序分为5个函数：" class="headerlink" title="爬虫程序分为5个函数："></a>爬虫程序分为5个函数：</h2><h3 id="collect-url"><a href="#collect-url" class="headerlink" title="collect_url()"></a>collect_url()</h3><blockquote>
+<p>根据妹子图网站页面的 URL 规律，设置需要爬取的起止 URL，最后返回需要将要爬取的 URL 列表</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect_url</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""创建需要下载图片的网页URL"""</span></div><div class="line"></div><div class="line">    url_list = []</div><div class="line">    <span class="comment"># 起始网页</span></div><div class="line">    start = <span class="number">5420</span></div><div class="line">    <span class="comment"># 结束网页</span></div><div class="line">    end = <span class="number">5425</span></div><div class="line">    <span class="keyword">while</span> start &lt;= end:</div><div class="line">        url = <span class="string">'http://www.meizitu.com/a/'</span> + str(start) + <span class="string">'.html'</span></div><div class="line">        url_list.append(url)</div><div class="line">        start = start + <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> url_list</div></pre></td></tr></table></figure>
+<h3 id="collect-picture-link"><a href="#collect-picture-link" class="headerlink" title="collect_picture_link()"></a>collect_picture_link()</h3><blockquote>
+<p>使用  Beautiful Soup 的<code>find_all</code>方法搜索 HTML 文档树，返回图片的 URL 列表</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect_picture_link</span><span class="params">(soup)</span>:</span></div><div class="line">    <span class="string">"""将网页URL中的图片URL抓取出来"""</span></div><div class="line"></div><div class="line">    picture_link_list = []</div><div class="line">    <span class="keyword">for</span> link_node <span class="keyword">in</span> soup.find_all(id=<span class="string">'picture'</span>):</div><div class="line">        <span class="keyword">for</span> link <span class="keyword">in</span> link_node.find_all(<span class="string">'img'</span>):</div><div class="line">            picture_link_list.append(link.get(<span class="string">'src'</span>))</div><div class="line">    <span class="keyword">return</span> picture_link_list</div></pre></td></tr></table></figure>
+<h3 id="create-directory"><a href="#create-directory" class="headerlink" title="create_directory()"></a>create_directory()</h3><blockquote>
+<p>创建以网页标题为名称的文件夹来存放图片</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_directory</span><span class="params">(url, soup)</span>:</span></div><div class="line">    <span class="string">"""创建以网页标题为名称的文件夹"""</span></div><div class="line"></div><div class="line">    title = soup.title.string[:<span class="number">-6</span>]</div><div class="line">    url_cut = len(url) - <span class="number">5</span></div><div class="line">    url_id = url[<span class="number">25</span>:url_cut]</div><div class="line">    <span class="comment"># Python文件的绝对路径</span></div><div class="line">    path = os.path.dirname(os.path.realpath(__file__))</div><div class="line">    <span class="keyword">if</span> os.path.exists(path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title):</div><div class="line">        <span class="keyword">None</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        os.mkdir(path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title)</div><div class="line">    dir = path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title + <span class="string">'/'</span></div><div class="line">    <span class="keyword">return</span> dir</div></pre></td></tr></table></figure>
+<h3 id="download-picture"><a href="#download-picture" class="headerlink" title="download_picture()"></a>download_picture()</h3><blockquote>
+<p>将图片保存到以网页标题为名称的文件夹</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_picture</span><span class="params">(links, dir, header)</span>:</span></div><div class="line">    <span class="string">"""下载并保存图片"""</span></div><div class="line"></div><div class="line">    i = <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> picture_link <span class="keyword">in</span> links:</div><div class="line">        picture_name = picture_link[<span class="number">-18</span>:].replace(<span class="string">'/'</span>,<span class="string">'-'</span>)</div><div class="line">        <span class="keyword">if</span> os.path.exists(dir + picture_name):</div><div class="line">            <span class="keyword">None</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            picture = requests.get(picture_link, headers=header, timeout=<span class="number">50</span>)</div><div class="line">            <span class="keyword">with</span> open(dir + picture_name, <span class="string">'wb'</span>) <span class="keyword">as</span> file:</div><div class="line">                file.write(picture.content)</div><div class="line">                print(<span class="string">'第 '</span> + str(i) + <span class="string">' 张完成'</span>)</div><div class="line">                i = i + <span class="number">1</span></div></pre></td></tr></table></figure>
+<h3 id="run"><a href="#run" class="headerlink" title="run()"></a>run()</h3><blockquote>
+<p>程序的主函数。</p>
+<p>使用 Requests 库的<code>get</code>方法发送请求，并用 BeautifulSoup 库和解析器解析网页的响应。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 加入headers模拟浏览器请求</span></div><div class="line">    header = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36'</span>,</div><div class="line">              &#125;</div><div class="line">    url_list = collect_url()</div><div class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> url_list:</div><div class="line">        <span class="comment"># 加入timeout超时时间</span></div><div class="line">        response = requests.get(url, headers=header, timeout=<span class="number">30</span>)</div><div class="line">        <span class="comment"># 将返回的网页编码强制设定为‘gb2312’，防止request将返回解析为其他编码</span></div><div class="line">        response.encoding = <span class="string">'gb2312'</span></div><div class="line">        <span class="comment"># BeautifulSoup的第2个参数是解析器，解析器主要有：自带的Python标准库解析器html.parser、lxml、html5lib</span></div><div class="line">        soup = BeautifulSoup(response.text, <span class="string">"html.parser"</span>)</div><div class="line">        links = collect_picture_link(soup)</div><div class="line">        dir = create_directory(url, soup)</div><div class="line">        download_picture(links, dir, header)</div></pre></td></tr></table></figure>
+<h2 id="保存到-SQLite"><a href="#保存到-SQLite" class="headerlink" title="保存到 SQLite"></a>保存到 SQLite</h2><blockquote>
+<p>对于练习 Python 算法来说，其实没有必要真正把图片下载下来，毕竟下载图片比较费时间。倒是可以先把图片的 URL 等信息保存到数据库，将来可以用多线程下载。</p>
+<p>将<code>create_directory()</code>函数替换为<code>database()</code>，去掉<code>download_picture()</code>函数即可。</p>
+</blockquote>
+<h3 id="database"><a href="#database" class="headerlink" title="database()"></a>database()</h3><blockquote>
+<p>将网页 URL、网页标题、图片 URL 保存到 SQLite 数据库</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">database</span><span class="params">(url,title,link)</span>:</span></div><div class="line">    <span class="string">"""将网页URL、网页标题、网页中的图片URL保存到SQLite数据库"""</span></div><div class="line"></div><div class="line">    <span class="comment"># 连接数据库</span></div><div class="line">    conn = sqlite3.connect(<span class="string">'picture_url.db'</span>)</div><div class="line">    cur = conn.cursor()</div><div class="line">    <span class="comment"># 创建一个表</span></div><div class="line">    cur.execute(<span class="string">'CREATE TABLE IF NOT EXISTS picture (page TEXT, title TEXT, url TEXT)'</span>)</div><div class="line">    <span class="comment"># 插入数据</span></div><div class="line">    cur.execute(<span class="string">"INSERT INTO picture VALUES ('%s','%s','%s')"</span> % (url,title,link))</div><div class="line">    cur.close()</div><div class="line">    conn.commit()</div><div class="line">    conn.close()</div></pre></td></tr></table></figure>
+<h1 id="To-Do"><a href="#To-Do" class="headerlink" title="To Do"></a>To Do</h1><ul>
+<li>多线程爬取网页、多线程下载图片（加快下载速度）</li>
+<li>加入 gzip 压缩格式支持（加快下载速度）</li>
+<li>增加代理 IP 地址池（防止 IP 被禁用）</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/爬虫/" rel="tag">#爬虫</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/10/Git初体验/" rel="next" title="Git初体验">
+                <i class="fa fa-chevron-left"></i> Git初体验
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" rel="prev" title="模拟登陆无线路由器（TL-WDR5600）">
+                模拟登陆无线路由器（TL-WDR5600） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/10/用Requests和BeautifulSoup爬取妹子图/"
+           data-title="用Requests和BeautifulSoup爬取妹子图" data-url="http://yoursite.com/2016/09/10/用Requests和BeautifulSoup爬取妹子图/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工具介绍"><span class="nav-number">2.</span> <span class="nav-text">工具介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#爬虫程序分析"><span class="nav-number">3.</span> <span class="nav-text">爬虫程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-项目地址："><span class="nav-number">3.1.</span> <span class="nav-text">GitHub 项目地址：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫程序分为5个函数："><span class="nav-number">3.2.</span> <span class="nav-text">爬虫程序分为5个函数：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#collect-url"><span class="nav-number">3.2.1.</span> <span class="nav-text">collect_url()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#collect-picture-link"><span class="nav-number">3.2.2.</span> <span class="nav-text">collect_picture_link()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#create-directory"><span class="nav-number">3.2.3.</span> <span class="nav-text">create_directory()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#download-picture"><span class="nav-number">3.2.4.</span> <span class="nav-text">download_picture()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run"><span class="nav-number">3.2.5.</span> <span class="nav-text">run()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存到-SQLite"><span class="nav-number">3.3.</span> <span class="nav-text">保存到 SQLite</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#database"><span class="nav-number">3.3.1.</span> <span class="nav-text">database()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#To-Do"><span class="nav-number">4.</span> <span class="nav-text">To Do</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

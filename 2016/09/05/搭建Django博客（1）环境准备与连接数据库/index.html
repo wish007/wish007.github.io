@@ -1,0 +1,688 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Django," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="环境准备
+因为我使用的是 Windows 系统，下面所有的操作都是在 Windows 系统下进行的，大部分操作和 Linux、macOS 相似，但有些地方要注意区分。
+
+使用 CMD 命令行创建 Python 虚拟环境，并在虚拟环境中安装 Django
+12$ virtualenv [虚拟环境名]$ pip install django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建Django博客（1）环境准备与连接数据库">
+<meta property="og:url" content="http://yoursite.com/2016/09/05/搭建Django博客（1）环境准备与连接数据库/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="环境准备
+因为我使用的是 Windows 系统，下面所有的操作都是在 Windows 系统下进行的，大部分操作和 Linux、macOS 相似，但有些地方要注意区分。
+
+使用 CMD 命令行创建 Python 虚拟环境，并在虚拟环境中安装 Django
+12$ virtualenv [虚拟环境名]$ pip install django">
+<meta property="og:image" content="http://yoursite.com/2016/09/05/搭建Django博客（1）环境准备与连接数据库/WelcomeToDjango.png">
+<meta property="og:updated_time" content="2016-09-07T16:39:11.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建Django博客（1）环境准备与连接数据库">
+<meta name="twitter:description" content="环境准备
+因为我使用的是 Windows 系统，下面所有的操作都是在 Windows 系统下进行的，大部分操作和 Linux、macOS 相似，但有些地方要注意区分。
+
+使用 CMD 命令行创建 Python 虚拟环境，并在虚拟环境中安装 Django
+12$ virtualenv [虚拟环境名]$ pip install django">
+<meta name="twitter:image" content="http://yoursite.com/2016/09/05/搭建Django博客（1）环境准备与连接数据库/WelcomeToDjango.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/05/搭建Django博客（1）环境准备与连接数据库/"/>
+
+
+  <title> 搭建Django博客（1）环境准备与连接数据库 | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                搭建Django博客（1）环境准备与连接数据库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-05T18:46:00+08:00" content="2016-09-05">
+              2016-09-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/05/搭建Django博客（1）环境准备与连接数据库/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/05/搭建Django博客（1）环境准备与连接数据库/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><blockquote>
+<p>因为我使用的是 Windows 系统，下面所有的操作都是在 Windows 系统下进行的，大部分操作和 Linux、macOS 相似，但有些地方要注意区分。</p>
+</blockquote>
+<p>使用 CMD 命令行创建 Python 虚拟环境，并在虚拟环境中安装 Django</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ virtualenv [虚拟环境名]</div><div class="line">$ pip install django</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>在 PyCharm 中创建 Django 项目，并选择刚刚创建的虚拟环境为其解释器，完成后将在指定目录生成 Django 基本目录及文件。</li>
+<li>当然，也可以使用 CMD 命令行创建 Django 项目（我创建的项目名是：myblog）：</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ 虚拟环境目录\Scripts\django-admin startproject [项目名]</div><div class="line">$ 虚拟环境目录\Scripts\django-admin startproject myblog</div></pre></td></tr></table></figure>
+<p>运行 Django 项目：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python manage.py runserver</div></pre></td></tr></table></figure>
+<p>打开 <a href="http://127.0.0.1:8000/" target="_blank" rel="external">http://127.0.0.1:8000/</a> 页面出现如下页面表示 Django 安装成功</p>
+<img src="/2016/09/05/搭建Django博客（1）环境准备与连接数据库/WelcomeToDjango.png" alt="Welcome to Django" title="Welcome to Django">
+<p>创建 Django 项目内的应用（我创建的应用名：blogapp）：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python manage.py startapp [应用名]</div><div class="line">$ python manage.py startapp blogapp</div></pre></td></tr></table></figure>
+<h1 id="安装数据库"><a href="#安装数据库" class="headerlink" title="安装数据库"></a>安装数据库</h1><p>Django 官方支持 PostgreSQL、MySQL、SQLite和Oracle 数据库，还有许多第三方提供的数据库也支持在 Django 中使用：SAP SQL Anywhere、IBM DB2、Microsoft SQL Server、Firebird、ODBC</p>
+<p>为了方便和在网上能够找到更多资源，我直接选择了官方支持的 PostgreSQL 数据库，下面开始安装：</p>
+<ol>
+<li><p>登陆 PostgreSQL 官网下载数据库直接安装</p>
+<p><a href="https://www.postgresql.org/" target="_blank" rel="external">https://www.postgresql.org/</a></p>
+</li>
+<li><p>安装 psycopg2 扩展让 Django 连接 PostgreSQL 数据库：</p>
+<p><a href="http://initd.org/psycopg/" target="_blank" rel="external">http://initd.org/psycopg/</a></p>
+<p>CMD 安装 psycopg2 命令：</p>
+</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ easy_install [安装包名]</div><div class="line">例如：</div><div class="line">$ easy_install psycopg2-<span class="number">2.6</span>.<span class="number">2</span>.win32-py3.<span class="number">4</span>-pg9.<span class="number">5.3</span>-release.exe</div></pre></td></tr></table></figure>
+<p><em>注意：Python 32/64位要对应下载 psycopg2 32/64位程序，否则 Django 连接数据库时会报错；但 PostgreSQL 安装32/64位都没问题</em></p>
+<h1 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a><strong>连接数据库</strong></h1><p>要连接数据库，当然要先新建一个数据库，直接在 PostgreSQL 管理工具里新建即可，这里数据库取名 <code>blog</code>，所有者为 <code>postgres</code></p>
+<p>编辑 Django 项目的 <code>setting.py</code> 文件中的 <code>DATABASES</code>字段，填入数据库信息：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">DATABASES = &#123;</div><div class="line">    <span class="string">'default'</span>: &#123;</div><div class="line">        <span class="string">'ENGINE'</span>: <span class="string">'django.db.backends.postgresql'</span>, <span class="comment">#PostgreSQL数据库规定写法</span></div><div class="line">        <span class="string">'NAME'</span>: <span class="string">'blog'</span>, <span class="comment">#数据库名称</span></div><div class="line">        <span class="string">'USER'</span>: <span class="string">'postgres'</span>, <span class="comment">#数据库用户</span></div><div class="line">        <span class="string">'PASSWORD'</span>: <span class="string">'123'</span>, <span class="comment">#数据库密码</span></div><div class="line">        <span class="string">'HOST'</span>: <span class="string">'127.0.0.1'</span>, <span class="comment">#数据库所在的IP地址</span></div><div class="line">        <span class="string">'PORT'</span>: <span class="string">'5432'</span>, <span class="comment">#连接数据库的端口号</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里就成功连接数据库了！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag">#Django</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/05/在Hexo中插入图片/" rel="next" title="在Hexo中插入图片">
+                <i class="fa fa-chevron-left"></i> 在Hexo中插入图片
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/05/搭建Django博客（2）创建数据模型/" rel="prev" title="搭建Django博客（2）创建数据模型">
+                搭建Django博客（2）创建数据模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/05/搭建Django博客（1）环境准备与连接数据库/"
+           data-title="搭建Django博客（1）环境准备与连接数据库" data-url="http://yoursite.com/2016/09/05/搭建Django博客（1）环境准备与连接数据库/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装数据库"><span class="nav-number">2.</span> <span class="nav-text">安装数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#连接数据库"><span class="nav-number">3.</span> <span class="nav-text">连接数据库</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
