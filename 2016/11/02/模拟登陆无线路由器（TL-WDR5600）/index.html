@@ -104,7 +104,8 @@ Requests ：HTTP for Humans ，涉及到 HTTP">
 <meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数1.png">
 <meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/加密函数2.png">
 <meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/获取数据.png">
-<meta property="og:updated_time" content="2016-11-03T16:09:24.428Z">
+<meta property="og:image" content="http://yoursite.com/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/抓取结果.png">
+<meta property="og:updated_time" content="2016-11-05T12:04:20.588Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模拟登陆无线路由器（TL-WDR5600）">
 <meta name="twitter:description" content="Why最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。
@@ -358,9 +359,12 @@ Requests ：HTTP for Humans ，涉及到 HTTP">
 <li><p>有了加密后的密码，顺理成章地将它作为 Payload 发送请求，返回的响应为 JSON 格式数据，通过 json 库解析获得 token：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">encryptPwd = <span class="string">'加密后的密码'</span></div><div class="line">url = <span class="string">'http://192.168.1.1/'</span></div><div class="line">headers = &#123;<span class="string">'Content-Type'</span>: <span class="string">'application/json; charset=UTF-8'</span>&#125;</div><div class="line">payload = <span class="string">'&#123;"method":"do","login":&#123;"password":"%s"&#125;&#125;'</span> % encryptPwd</div><div class="line">response = requests.post(url, data=payload, headers=headers)</div><div class="line">stok = json.loads(response.text)[<span class="string">'stok'</span>]</div></pre></td></tr></table></figure>
 </li>
-<li><p>获得 stok 后就可以将它加入请求 URL 中获取数据了；例如获取用户当前的上传速度、下载速度、限速信息等。返回的信息为 JSON 格式数据，可以解析做格式化处理增强可读性。</p>
-<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/获取数据.png" alt="获取数据.png" title="">
+<li><p>获得 stok 后就可以将它加入请求 URL 中获取数据了</p>
+<p>例如获取用户当前的上传速度、下载速度、限速信息等；返回的信息为 JSON 格式数据，可以解析做格式化处理增强可读性。</p>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/获取数据.png" alt="获取数据" title="获取数据">
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">stok = json.loads(response.text)[<span class="string">'stok'</span>]</div><div class="line">headers = &#123;<span class="string">'Content-Type'</span>: <span class="string">'application/json; charset=UTF-8'</span>&#125;</div><div class="line">url = <span class="string">'%sstok=%s/ds'</span> % (<span class="string">'http://192.168.1.1/'</span>,stok)</div><div class="line">payload = <span class="string">'&#123;"hosts_info":&#123;"table":"host_info"&#125;,"method":"get"&#125;'</span></div><div class="line">response = requests.post(url, data=payload, headers=headers)</div></pre></td></tr></table></figure>
+<img src="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/抓取结果.png" alt="抓取结果" title="抓取结果">
+<p>​</p>
 <h1 id="More"><a href="#More" class="headerlink" title="More"></a>More</h1><p>根据上面的分析，发现整个过程的关键点有几个：</p>
 <ul>
 <li>请求参数</li>
