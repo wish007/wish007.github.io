@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,爬虫,知乎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="前言知乎是一个有趣的网站，当前（2016.11.05） Alexa 全球排名为 112 ，中国排名为 24 ，从趋势看排名仍会上升，相对活跃的用户群为知乎沉淀了大量的数据，是否可以转化这些数据来做一些有趣的东西就看大家的想象力了。
+想必很多人都爬取过知乎，知乎的反爬虫机制也越来越强，攻防双方都在不断地升级。这篇文章只涉及到登录知乎，完成后再拓展其他功能。
+获取登录参数打开知乎登录页面，可以看到有手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎爬虫">
+<meta property="og:url" content="http://yoursite.com/2016/11/05/知乎爬虫/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="前言知乎是一个有趣的网站，当前（2016.11.05） Alexa 全球排名为 112 ，中国排名为 24 ，从趋势看排名仍会上升，相对活跃的用户群为知乎沉淀了大量的数据，是否可以转化这些数据来做一些有趣的东西就看大家的想象力了。
+想必很多人都爬取过知乎，知乎的反爬虫机制也越来越强，攻防双方都在不断地升级。这篇文章只涉及到登录知乎，完成后再拓展其他功能。
+获取登录参数打开知乎登录页面，可以看到有手">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/手机号登录.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/手机号FormData.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/邮箱登录.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/邮箱FormData.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/xsrf.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/英文验证码.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/中文验证码.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/验证码分辨率.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/中文验证码FormData.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/05/知乎爬虫/获取验证码.png">
+<meta property="og:updated_time" content="2016-11-05T09:39:06.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎爬虫">
+<meta name="twitter:description" content="前言知乎是一个有趣的网站，当前（2016.11.05） Alexa 全球排名为 112 ，中国排名为 24 ，从趋势看排名仍会上升，相对活跃的用户群为知乎沉淀了大量的数据，是否可以转化这些数据来做一些有趣的东西就看大家的想象力了。
+想必很多人都爬取过知乎，知乎的反爬虫机制也越来越强，攻防双方都在不断地升级。这篇文章只涉及到登录知乎，完成后再拓展其他功能。
+获取登录参数打开知乎登录页面，可以看到有手">
+<meta name="twitter:image" content="http://yoursite.com/2016/11/05/知乎爬虫/手机号登录.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/05/知乎爬虫/"/>
+
+
+  <title> 知乎爬虫 | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                知乎爬虫
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-05T14:19:40+08:00" content="2016-11-05">
+              2016-11-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/05/知乎爬虫/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/知乎爬虫/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a href="http://www.zhihu.com/" target="_blank" rel="external">知乎</a>是一个有趣的网站，当前（2016.11.05） <a href="http://www.alexa.com/siteinfo/zhihu.com" target="_blank" rel="external">Alexa 全球排名</a>为 112 ，中国排名为 24 ，从趋势看排名仍会上升，相对活跃的用户群为知乎沉淀了大量的数据，是否可以转化这些数据来做一些有趣的东西就看大家的想象力了。</p>
+<p>想必很多人都爬取过知乎，知乎的反爬虫机制也越来越强，攻防双方都在不断地升级。这篇文章只涉及到登录知乎，完成后再拓展其他功能。</p>
+<h1 id="获取登录参数"><a href="#获取登录参数" class="headerlink" title="获取登录参数"></a>获取登录参数</h1><p>打开知乎登录页面，可以看到有手机号和邮箱为账号名 2 种登录方式，尝试输入手机号、邮箱分别从 Network 控制台查看；记得勾上<code>Preserve log</code>，否则会看不到发送账号、密码的请求。</p>
+<a id="more"></a>
+<img src="/2016/11/05/知乎爬虫/手机号登录.png" alt="手机号登录" title="手机号登录">
+<img src="/2016/11/05/知乎爬虫/手机号FormData.png" alt="手机号Form Data" title="手机号Form Data">
+<img src="/2016/11/05/知乎爬虫/邮箱登录.png" alt="邮箱登录" title="邮箱登录">
+<img src="/2016/11/05/知乎爬虫/邮箱FormData.png" alt="邮箱Form Data" title="邮箱Form Data">
+<p>从图上可以看到：</p>
+<p>手机号登录的请求 URL ：<a href="https://www.zhihu.com/login/phone_num" target="_blank" rel="external">https://www.zhihu.com/login/phone_num</a></p>
+<p>password、phone_num 分别为密码、手机号</p>
+<p>邮箱登录的请求 URL ：<a href="https://www.zhihu.com/login/email" target="_blank" rel="external">https://www.zhihu.com/login/email</a></p>
+<p>password、email 分别为密码、邮箱</p>
+<p>但它们都有一个参数 _xsrf 的值来源不明，看名字很容易猜想是一个防止跨站请求伪造的参数，在点击“登录”按钮前就已经产生，根据它的值在页面的 HTML 文件中可以搜索到：</p>
+<img src="/2016/11/05/知乎爬虫/xsrf.png" alt="xsrf" title="xsrf">
+<p><strong>获取 _xsrf 的函数：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_xsrf</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    获取_xrsf</div><div class="line">    """</div><div class="line">    response = session.get(<span class="string">'https://www.zhihu.com'</span>, headers=headers)</div><div class="line">    html = response.text</div><div class="line">    pattern = re.compile(<span class="string">r'&lt;input type="hidden" name="_xsrf" value="(.*?)"/&gt;'</span>)</div><div class="line">    _xsrf = re.findall(pattern, html)</div><div class="line">    <span class="keyword">return</span> _xsrf[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<p>至此所有的登录参数都找到了，根据这些参数发送登录请求，会返回类似这样的响应：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"r"</span>: <span class="number">1</span>,</div><div class="line">    <span class="attr">"errcode"</span>: <span class="number">100000</span>,</div><div class="line">    </div><div class="line">    <span class="attr">"data"</span>: &#123;<span class="attr">"account"</span>:<span class="string">"\u5e10\u53f7\u6216\u5bc6\u7801\u9519\u8bef"</span>&#125;,</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="attr">"msg"</span>: <span class="string">"\u8be5\u624b\u673a\u53f7\u5c1a\u672a\u6ce8\u518c\u77e5\u4e4e"</span></div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对比成功登录和登录失败，发现返回<code>&quot;r&quot;: 0</code>表示登录成功，<code>&quot;r&quot;: 1</code>表示登录失败。然而尝试了几次登录之后，后面的登录都失败了，从浏览器中发现有时会出现验证码的情况，仅仅发送前面发现的几个参数还不够，从控制台中看到英文、中文验证码分别对应下面 2 种 Form Data：</p>
+<img src="/2016/11/05/知乎爬虫/英文验证码.png" alt="英文验证码" title="英文验证码">
+<p>参数值就是验证码中的英文字母</p>
+<img src="/2016/11/05/知乎爬虫/中文验证码.png" alt="中文验证码" title="中文验证码">
+<img src="/2016/11/05/知乎爬虫/验证码分辨率.png" alt="验证码分辨率" title="验证码分辨率">
+<img src="/2016/11/05/知乎爬虫/中文验证码FormData.png" alt="中文验证码Form Data" title="中文验证码Form Data">
+<p>增加一个参数值<code>captcha_type: cn</code>，<code>captcha</code>的<code>img_size</code>分别是图片横纵分辨率的 1/2 ，<code>input_points</code>是点击的标记在图中坐标系中的坐标。</p>
+<h1 id="获取验证码"><a href="#获取验证码" class="headerlink" title="获取验证码"></a>获取验证码</h1><p>从控制台中查看获取验证码的请求：</p>
+<img src="/2016/11/05/知乎爬虫/获取验证码.png" alt="获取验证码" title="获取验证码">
+<p>可以看到验证码的请求 URL ：<a href="https://www.zhihu.com/captcha.gif?r=1478334713478&amp;type=login" target="_blank" rel="external">https://www.zhihu.com/captcha.gif?r=1478334713478&amp;type=login</a> ，并且每次刷新验证码的请求 URL 都不一样，Google 求救后发现<code>r</code>后面的参数是一个时间戳。</p>
+<blockquote>
+<p>时间戳是指格林尼治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总秒数。</p>
+</blockquote>
+<p>无论是英文字母还是倒立中文的验证码，识别起来都比较困难，暂时只能采用人工识别的方式输入验证码，自动识别验证码可以在以后学习图像处理时挑战一下。</p>
+<p><strong>获取验证码的函数：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_captcha</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    获取验证码</div><div class="line">    """</div><div class="line">    t = int(time.time() * <span class="number">1000</span>)</div><div class="line">    <span class="comment"># 知乎网页版登录界面有时出现的是点击倒立中文字的验证模式</span></div><div class="line">    <span class="comment"># 请求URL是在 type=login 后面加上 &amp;lang=cn 参数</span></div><div class="line">    <span class="comment"># 这里强制请求输入字母类型的验证码，就不涉及到点击了</span></div><div class="line">    captcha_url = <span class="string">'http://www.zhihu.com/captcha.gif?r=%s&amp;type=login'</span> % t</div><div class="line">    response = session.get(captcha_url, headers=headers)</div><div class="line">    <span class="keyword">with</span> open(<span class="string">'captcha.jpg'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</div><div class="line">        f.write(response.content)</div><div class="line">        f.close()</div><div class="line">    image = Image.open(<span class="string">'captcha.jpg'</span>)</div><div class="line">    image.show()</div><div class="line">    captcha = input(<span class="string">'请输入验证码：'</span>)</div><div class="line">    <span class="keyword">return</span> captcha</div></pre></td></tr></table></figure>
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a href="https://github.com/wish007/zhihu" target="_blank" rel="external">GitHub - wish007/zhihu</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/爬虫/" rel="tag">#爬虫</a>
+          
+            <a href="/tags/知乎/" rel="tag">#知乎</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" rel="next" title="模拟登陆无线路由器（TL-WDR5600）">
+                <i class="fa fa-chevron-left"></i> 模拟登陆无线路由器（TL-WDR5600）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/05/知乎爬虫/"
+           data-title="知乎爬虫" data-url="http://yoursite.com/2016/11/05/知乎爬虫/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取登录参数"><span class="nav-number">2.</span> <span class="nav-text">获取登录参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取验证码"><span class="nav-number">3.</span> <span class="nav-text">获取验证码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目地址"><span class="nav-number">4.</span> <span class="nav-text">项目地址</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
