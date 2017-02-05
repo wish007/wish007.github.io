@@ -94,7 +94,7 @@
 创建博客文章的数据模型Django 中用models.py文件中的一个类表示数据库中的一张表，类中的属性表示数据库中的一列。因此，我们可以编辑models.py文件来创建数据库表。">
 <meta property="og:image" content="http://yoursite.com/2016/09/05/搭建Django博客（2）创建数据模型/login.png">
 <meta property="og:image" content="http://yoursite.com/2016/09/05/搭建Django博客（2）创建数据模型/admin.png">
-<meta property="og:updated_time" content="2016-09-07T16:39:13.933Z">
+<meta property="og:updated_time" content="2017-02-02T09:35:22.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建Django博客（2）创建数据模型">
 <meta name="twitter:description" content="前面我们创建并连接了数据库，但我们没有向数据库写入任何数据，在 Django 中直接与数据库交互的是数据模型，可以通过数据模型实现对数据库的各种操作。
@@ -319,7 +319,7 @@
 <h1 id="将博客应用注册到-Django"><a href="#将博客应用注册到-Django" class="headerlink" title="将博客应用注册到 Django"></a>将博客应用注册到 Django</h1><p>编辑<code>setting.py</code>文件中的<code>INSTALLED_APPS</code>字段，加入应用名称；将创建的博客应用<code>blogapp</code>注册到 Django ，使应用的数据模型写入数据库。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">INSTALLED_APPS = [</div><div class="line">    <span class="string">'blogapp'</span>,  <span class="comment"># 创建的 Django 应用 blogapp</span></div><div class="line">    <span class="string">'django.contrib.admin'</span>,  <span class="comment"># Django 默认自带的应用</span></div><div class="line">    <span class="string">'django.contrib.auth'</span>,   <span class="comment"># Django 默认自带的应用</span></div><div class="line">    <span class="string">'django.contrib.contenttypes'</span>,   <span class="comment"># Django 默认自带的应用</span></div><div class="line">    <span class="string">'django.contrib.sessions'</span>,   <span class="comment"># Django 默认自带的应用</span></div><div class="line">    <span class="string">'django.contrib.messages'</span>,   <span class="comment"># Django 默认自带的应用</span></div><div class="line">    <span class="string">'django.contrib.staticfiles'</span>,   <span class="comment"># Django 默认自带的应用</span></div><div class="line">]</div></pre></td></tr></table></figure>
 <p>现在我们已经准备好将自定义的数据模型写入数据库：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python manage.py makemigratinons</div></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python manage.py makemigrations</div></pre></td></tr></table></figure>
 <p><em>注意：执行上面命令后，会在<code>myblog/blogapp/migrations</code>文件夹下创建一个 python 迁移文件，但数据模型此时并未写入数据库</em></p>
 <p>真正更新数据库的命令</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python manage.py migrate</div></pre></td></tr></table></figure>
@@ -441,7 +441,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -458,7 +458,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

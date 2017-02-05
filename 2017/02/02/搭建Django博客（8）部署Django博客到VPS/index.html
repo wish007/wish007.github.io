@@ -1,0 +1,739 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,uWSGI,supervisor,Django,VPS,Linux,WSGI," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI层使用 uWSGI，Web 应用为 Django。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建Django博客（8）部署Django博客到VPS">
+<meta property="og:url" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI层使用 uWSGI，Web 应用为 Django。">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png">
+<meta property="og:updated_time" content="2017-02-05T11:10:56.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建Django博客（8）部署Django博客到VPS">
+<meta name="twitter:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI层使用 uWSGI，Web 应用为 Django。">
+<meta name="twitter:image" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/"/>
+
+
+  <title> 搭建Django博客（8）部署Django博客到VPS | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                搭建Django博客（8）部署Django博客到VPS
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-02T12:08:20+08:00" content="2017-02-02">
+              2017-02-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/02/搭建Django博客（8）部署Django博客到VPS/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI层使用 <a href="http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html" target="_blank" rel="external">uWSGI</a>，Web 应用为 Django。</p>
+<img src="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png" alt="Nginx + uWSGI + Django + Supervisor" title="Nginx + uWSGI + Django + Supervisor">
+<a id="more"></a>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>在开发阶段，调试模式处于打开状态可以方便我们调试，但部署到生产环境显然不能这么做，必须对 Django 项目设置文件<code>settings.py</code>做些修改，提升系统安全性：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SECRET_KEY = 'This is a secret key!'  --&gt;</div><div class="line">SECRET_KEY = 'sqDZl^NeQ7SB1wJqeDoxhpf8RnTA1hMhJd5NQApcLizIx*!GRe'  </div><div class="line"># 此项修改尤为重要，自行生成一串足够长和复杂的 KEY，如果你把项目代码放到 GitHub，也记得要在生产环境修改此字段</div><div class="line"></div><div class="line">DEBUG = True --&gt; DEBUG = False  #关闭调试模式</div><div class="line">ALLOWED_HOSTS = [] --&gt; ALLOWED_HOSTS = ['*']  #允许所有IP访问，否则他人无法访问</div></pre></td></tr></table></figure>
+<p>开发阶段，调试模式开启时 Django 会自动找到项目的静态文件来响应请求，关闭后 Django 将不处理对静态文件的请求，对这些请求返回 404 错误；部署到线上时，Nginx 会处理对静态文件的请求，所以必须将项目涉及到的静态文件搜集起来。在<code>settings.py</code>文件中添加<code>STATIC_ROOT</code>字段，设置搜集起来的静态文件的保存目录：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">"static"</span>)</div></pre></td></tr></table></figure>
+<p>执行搜集静态文件的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py collectstatic</div></pre></td></tr></table></figure>
+<p>在项目根目录下将生产一个<code>static</code>文件夹，里面保存了项目用到的所有静态文件。</p>
+<p>创建运行环境依赖文件<code>requirements.txt</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip freeze &gt; requirements.txt</div></pre></td></tr></table></figure>
+<h1 id="正式部署"><a href="#正式部署" class="headerlink" title="正式部署"></a>正式部署</h1><h2 id="创建运行环境"><a href="#创建运行环境" class="headerlink" title="创建运行环境"></a>创建运行环境</h2><p>首先，将项目所有的文件导入服务器用户目录 /home/sun/django_blog，创建运行环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/sun/django_blog</div><div class="line">virtualenv venv</div><div class="line"><span class="built_in">source</span> venv/bin/activate</div><div class="line">pip install -r requirements.txt</div></pre></td></tr></table></figure>
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p>原项目里的数据库文件可以保留，跳过这一步也没问题；如果不保留原有数据库，可以按下面步骤重新创建数据库并导入数据结构：</p>
+<p>生成数据库文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py runserver</div></pre></td></tr></table></figure>
+<p>生成数据结构迁移文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py makemigrations</div></pre></td></tr></table></figure>
+<p>将数据结构写入数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py migrate</div></pre></td></tr></table></figure>
+<p>创建管理员账号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python manage.py createsuperuser</div></pre></td></tr></table></figure>
+<p>运行 Django：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/sun/django_blog</div><div class="line"><span class="built_in">source</span> venv/bin/activate</div><div class="line">python manage.py runserver</div></pre></td></tr></table></figure>
+<p>测试输出是否正常：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl http://127.0.0.1:8000</div></pre></td></tr></table></figure>
+<h2 id="配置uWSGI"><a href="#配置uWSGI" class="headerlink" title="配置uWSGI"></a>配置uWSGI</h2><p>安装 uWSGI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install uwsgi</div></pre></td></tr></table></figure>
+<p>配置 uWSGI</p>
+<blockquote>
+<p>在 Django 项目目录下新建 uWSGI 配置文件 uwsgi_config.ini 并输入</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[uwsgi]</div><div class="line"></div><div class="line"><span class="comment"># Django-related settings</span></div><div class="line"><span class="built_in">chdir</span> = /home/sun/django_blog</div><div class="line">home = /home/sun/django_blog/venv</div><div class="line">module = myblog.wsgi</div><div class="line"></div><div class="line"><span class="comment"># process-related settings</span></div><div class="line">master = <span class="literal">true</span></div><div class="line">socket = 127.0.0.1:8000</div><div class="line">processes = 4</div><div class="line">threads = 2</div><div class="line">buffer-size = 32768</div></pre></td></tr></table></figure>
+<p>启动 uWSGI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) [sun@SS django_blog]$ uwsgi uwsgi_config.ini</div></pre></td></tr></table></figure>
+<h2 id="配置Nginx"><a href="#配置Nginx" class="headerlink" title="配置Nginx"></a>配置Nginx</h2><p>安装 Nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install nginx</div></pre></td></tr></table></figure>
+<p>配置 Nginx</p>
+<blockquote>
+<p>配置文件目录：/etc/nginx/conf.d 目录下的 default.conf</p>
+<p>即使已经有监听同一个端口的应用，也可以直接添加另一个应用，因为他们的<code>server_name</code>不同，Nginx 会自动处理好不同站点的转发。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">server &#123; </div><div class="line">  listen 80; </div><div class="line">  server_name xx.xx.xx.xx; <span class="comment">#公网地址 </span></div><div class="line">  location / &#123; </div><div class="line">  include uwsgi_params;</div><div class="line">  uwsgi_pass 127.0.0.1:8000; <span class="comment"># 指向uwsgi 所应用的内部地址,所有请求将转发给uwsgi 处理 </span></div><div class="line">  uwsgi_param UWSGI_PYHOME /home/sun/env/django_blog; <span class="comment"># 指向虚拟环境目录 </span></div><div class="line">  uwsgi_param UWSGI_CHDIR /home/sun/django_blog; <span class="comment"># 指向网站根目录 </span></div><div class="line">  uwsgi_param UWSGI_SCRIPT manage:app; <span class="comment"># 指定启动程序</span></div><div class="line">  uwsgi_read_timeout 100; </div><div class="line"> &#125;</div><div class="line">  location /static/ &#123;  <span class="comment">#转发对静态文件的请求</span></div><div class="line">  root /home/sun/django_blog;  <span class="comment">#必须填 static 文件夹所在目录</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>启动 Nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service nginx start</div></pre></td></tr></table></figure>
+<p>Nginx 相关命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 关闭 Nginx</span></div><div class="line">service nginx stop</div><div class="line"></div><div class="line"><span class="comment"># 重启 Nginx</span></div><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<h2 id="配置Supervisor"><a href="#配置Supervisor" class="headerlink" title="配置Supervisor"></a>配置Supervisor</h2><blockquote>
+<p><a href="http://supervisord.org/" target="_blank" rel="external">Supervisor</a> 有两个主要的组成部分：</p>
+<ol>
+<li><p>supervisord</p>
+<p>它是 Supervisor 的服务端，运行 Supervisor 时会启动一个 supervisord 进程，负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，将普通的命令行进程变为后台daemon，响应客户端命令、监控进程状态、自动重启 crashed 掉的子进程、记录子进程的 stdout、stderr 等。</p>
+</li>
+<li><p>supervisorctl</p>
+<p>它是 Supervisor 的客户端，提供了 shell-like 接口来调用 supervisord，通过 supervisorctl 用户可以连接到多个 supervisord 进程，获取supervisord 所管理的子进程状态，可以执行 stop、start、restart 等命令来管理这些子进程。</p>
+</li>
+</ol>
+</blockquote>
+<p>安装完 uWSGI、Nginx 后，Nginx 可以直接设置开机启动，但 uWSGI 还不能直接开机启动，这里我用 Supervisor 来启动并守护  uWSGI 运行，在全局 Python 环境安装 Supervisor：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install supervisor</div></pre></td></tr></table></figure>
+<p>配置 Supervisor：</p>
+<blockquote>
+<p>配置文件目录：/etc/supervisord.conf</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[program:django_blog]</div><div class="line"><span class="comment"># 启动命令入口</span></div><div class="line"><span class="built_in">command</span>=/home/sun/env/django_blog/bin/uwsgi /home/sun/django_blog/uwsgi_config.ini</div><div class="line"><span class="comment"># 命令程序所在目录</span></div><div class="line">directory=/home/sun/django_blog</div><div class="line">user=sun</div><div class="line">autostart=<span class="literal">true</span></div><div class="line">autorestart=<span class="literal">true</span></div><div class="line">startsecs=10</div><div class="line">startretries=10</div><div class="line"><span class="comment">#日志地址</span></div><div class="line">stdout_logfile=/home/sun/django_blog/uwsgi_supervisor.log</div><div class="line">stdout_logfile_maxbytes = 50MB</div><div class="line">stderr_logfile=/home/sun/django_blog/uwsgi_err.log</div><div class="line">stderr_logfile_maxbytes = 50MB</div></pre></td></tr></table></figure>
+<p>设置 supervisord 开机启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chkconfig --add supervisord</div><div class="line">chkconfig supervisord on</div></pre></td></tr></table></figure>
+<p>启动 supervisord</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service supervisord start</div></pre></td></tr></table></figure>
+<p>查看 django_blog 进程是否运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line"><span class="comment"># 输出 RUNNING 说明子进程成功运行</span></div><div class="line">django_blog    RUNNING   pid 17168, uptime 0:03:25</div></pre></td></tr></table></figure>
+<p>supervisord 相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 重启 supervisord 进程</span></div><div class="line">service supervisord restart</div><div class="line"></div><div class="line"><span class="comment"># 停止 supervisord 进程</span></div><div class="line">service supervisord stop</div><div class="line"></div><div class="line"><span class="comment"># 注意：supervisord 重启或停止后，uwsgi 进程会不受 supervisord 控制，必须手动 kill 掉 uwsgi 进程后再启动 supervisord 进程</span></div></pre></td></tr></table></figure>
+<p>supervisorctl 相关命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 启动某个进程，program_name 为 [program:x] 里的 x</span></div><div class="line">supervisorctl start program_name</div><div class="line"><span class="comment"># 停止某个进程</span></div><div class="line">supervisorctl stop program_name</div><div class="line"><span class="comment"># 重启某个进程</span></div><div class="line">supervisorctl restart program_name</div><div class="line"></div><div class="line"><span class="comment"># 结束所有属于名为 groupworker 这个分组的进程 (start，restart 同理)</span></div><div class="line">supervisorctl stop groupworker:</div><div class="line"><span class="comment"># 结束 groupworker:name1 这个进程 (start，restart 同理)</span></div><div class="line">supervisorctl stop groupworker:name1</div><div class="line"><span class="comment"># 停止全部进程，注意：start、restart、stop 都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all</div><div class="line"></div><div class="line"><span class="comment"># 停止所有进程并按新的配置启动所有进程</span></div><div class="line">supervisorctl reload</div><div class="line"><span class="comment"># 重启配置有改动的进程，启动配置中新加入的进程，配置没有改动的进程会保持原有的启动或停止状态</span></div><div class="line">supervisorctl update</div></pre></td></tr></table></figure>
+<h1 id="Django静态文件处理"><a href="#Django静态文件处理" class="headerlink" title="Django静态文件处理"></a>Django静态文件处理</h1><p>根据上面的步骤，一般能成功运行起来 Django，主页面的访问也没问题。</p>
+<p>当打开 Django 管理页面 <code>公网IP:端口/admin</code>，发现登录页面的样式丢失了，查看网页源代码，发现点击静态文件会产生 403 错误的返回，说明服务器收到了请求但拒绝处理请求，信息是 Nginx 服务器返回的，接着想到查看 Nginx 日志，打开 /var/log/nginx/error.log 文件，发现有这样的错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2017/02/03 13:05:27 [error] 31497<span class="comment">#0: *1 open() "/home/sun/django_blog/static/admin/css/login.css" failed (13: Permission denied), client: 12.56.11.158, server: xx.xx.xx.xx, request: "GET /static/admin/css/login.css HTTP/1.1", host: "xx.xx.xx.xx"</span></div></pre></td></tr></table></figure>
+<p>说明打开静态文件失败是由于<code>Permission denied</code>产生的，很可能与 Nginx 进程的权限和静态文件的权限有关，打开 Nginx 配置文件 /etc/nginx/nginx.conf ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">user nginx;</div><div class="line">worker_processes auto;</div><div class="line">error_log /var/<span class="built_in">log</span>/nginx/error.log;</div><div class="line">pid /var/run/nginx.pid;</div></pre></td></tr></table></figure>
+<p>发现 Nginx worker process 是以 nginx 用户启动的，将 worker 启动用户改为 django_blog/static/ 目录所有者用户相同：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user nginx --&gt; user sun</div></pre></td></tr></table></figure>
+<p>重启 Nginx 进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<p>Django 管理页面的样式恢复了。</p>
+<p>参考：<a href="http://stackoverflow.com/questions/28732692/nginxdjangouwsgi-static-files-403-forbidden" target="_blank" rel="external">nginx+django+uwsgi static files 403 Forbidden</a></p>
+<h1 id="进阶阅读"><a href="#进阶阅读" class="headerlink" title="进阶阅读"></a>进阶阅读</h1><p><a href="http://www.ituring.com.cn/article/214859" target="_blank" rel="external">利用 NGINX 最大化 Python 性能  第一部分：Web 服务和缓存</a></p>
+<p><a href="http://www.ituring.com.cn/article/215554" target="_blank" rel="external">利用 NGINX 最大化 Python 性能  第二部分：负载均衡和监控</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag">#Nginx</a>
+          
+            <a href="/tags/uWSGI/" rel="tag">#uWSGI</a>
+          
+            <a href="/tags/supervisor/" rel="tag">#supervisor</a>
+          
+            <a href="/tags/Django/" rel="tag">#Django</a>
+          
+            <a href="/tags/VPS/" rel="tag">#VPS</a>
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/WSGI/" rel="tag">#WSGI</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/23/使用uWSGI和Nginx部署Flask/" rel="next" title="使用uWSGI和Nginx部署Flask">
+                <i class="fa fa-chevron-left"></i> 使用uWSGI和Nginx部署Flask
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/02/搭建Django博客（8）部署Django博客到VPS/"
+           data-title="搭建Django博客（8）部署Django博客到VPS" data-url="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正式部署"><span class="nav-number">2.</span> <span class="nav-text">正式部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建运行环境"><span class="nav-number">2.1.</span> <span class="nav-text">创建运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">2.2.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置uWSGI"><span class="nav-number">2.3.</span> <span class="nav-text">配置uWSGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Nginx"><span class="nav-number">2.4.</span> <span class="nav-text">配置Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Supervisor"><span class="nav-number">2.5.</span> <span class="nav-text">配置Supervisor</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Django静态文件处理"><span class="nav-number">3.</span> <span class="nav-text">Django静态文件处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶阅读"><span class="nav-number">4.</span> <span class="nav-text">进阶阅读</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

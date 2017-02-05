@@ -238,6 +238,146 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/05/搭建Django博客（3）网页处理逻辑/" itemprop="url">
+                  搭建Django博客（3）网页处理逻辑
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-05T21:18:32+08:00" content="2016-09-05">
+              2016-09-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/05/搭建Django博客（3）网页处理逻辑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/05/搭建Django博客（3）网页处理逻辑/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="网页程序的逻辑"><a href="#网页程序的逻辑" class="headerlink" title="网页程序的逻辑"></a>网页程序的逻辑</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>把数据存取逻辑、业务逻辑和表现逻辑组合在一起的概念有时被称为软件架构的 Model-View-Controller(MVC) 模式。</p>
+<p>Model 代表数据存取层，View 代表的是系统中选择显示什么和怎么显示的部分，Controller 指的是系统中根据用户输入并视需要访问模型，以决定使用哪个视图的那部分。</p>
+</blockquote>
+<p>Django 也遵循这种 MVC 开发模式，下面是 Django 所对应的 MVC：</p>
+<ul>
+<li>M  数据存取部分，由 Django 数据库层处理。</li>
+<li>V  选择哪些数据要显示以及怎样显示的部分，由视图和模板处理。</li>
+<li>C  根据用户输入分配视图的部分，由 Django 框架根据 URLconf 设置，对给定的 URL 调用适当的函数。</li>
+</ul>
+<p>由于 Django 里面 C 由框架自行处理，而 Django 里更关注的是模型（Model）、模板（Template）和视图（Views），所以 Django 也被称为 MTV 框架 。在 MTV 开发模式中：</p>
+<ul>
+<li>M  代表模型（Model），即数据存取层。 该层处理与数据相关的所有事务： 如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等。</li>
+<li>T  代表模板（Template），即表现层。 该层处理与表现相关的决定： 如何在页面或其他类型文档中进行显示。</li>
+<li>V  代表视图（Views），即业务逻辑层。 该层包含存取模型及调取恰当模板的相关逻辑，可以把它看作模型与模板之间的桥梁。</li>
+</ul>
+<p>Django 处理请求的流程：</p>
+<img src="/2016/09/05/搭建Django博客（3）网页处理逻辑/flow.png" alt="Django 请求处理流程" title="Django 请求处理流程">
+<p>request 进来–&gt;<code>urls.py</code>根据 url 指配处理函数–&gt;<code>views.py</code>处理 request 请求–&gt;返回 response</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/05/搭建Django博客（3）网页处理逻辑/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/05/搭建Django博客（2）创建数据模型/" itemprop="url">
                   搭建Django博客（2）创建数据模型
                 </a>
@@ -757,7 +897,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -774,7 +914,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

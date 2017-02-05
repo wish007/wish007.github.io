@@ -92,11 +92,13 @@
 <meta property="og:site_name" content="wish007">
 <meta property="og:description" content="代码高亮安装语法高亮库 Pygments
 1$ pip install Pygments">
-<meta property="og:updated_time" content="2016-09-07T16:36:53.179Z">
+<meta property="og:image" content="http://yoursite.com/2016/09/05/搭建Django博客（6）代码高亮及后台Markdown编辑器/markdown_editor.png">
+<meta property="og:updated_time" content="2017-02-04T12:01:42.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建Django博客（6）代码高亮及后台Markdown编辑器">
 <meta name="twitter:description" content="代码高亮安装语法高亮库 Pygments
 1$ pip install Pygments">
+<meta name="twitter:image" content="http://yoursite.com/2016/09/05/搭建Django博客（6）代码高亮及后台Markdown编辑器/markdown_editor.png">
 
 
 
@@ -318,6 +320,8 @@
 <p>在<code>setting.py</code>的<code>INSTALLED_APPS</code>添加<code>pagedown</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">INSTALLED_APPS = [</div><div class="line">    <span class="string">'blogapp'</span>,</div><div class="line">    <span class="string">'pagedown'</span>,</div><div class="line">    <span class="string">'django.contrib.admin'</span>,</div><div class="line">    <span class="string">'django.contrib.auth'</span>,</div><div class="line">    <span class="string">'django.contrib.contenttypes'</span>,</div><div class="line">    <span class="string">'django.contrib.sessions'</span>,</div><div class="line">    <span class="string">'django.contrib.messages'</span>,</div><div class="line">    <span class="string">'django.contrib.staticfiles'</span>,</div><div class="line">]</div></pre></td></tr></table></figure></p>
 <p>编辑<code>admin.py</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> blogapp.models <span class="keyword">import</span> Article</div><div class="line"><span class="keyword">from</span> pagedown.widgets <span class="keyword">import</span> AdminPagedownWidget</div><div class="line"><span class="keyword">from</span> django <span class="keyword">import</span> forms</div><div class="line"></div><div class="line"><span class="comment"># Define your form here.</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleForm</span><span class="params">(forms.ModelForm)</span>:</span></div><div class="line">    content = forms.CharField(widget=AdminPagedownWidget())</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        model = Article</div><div class="line">        fields = <span class="string">'__all__'</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    form = ArticleForm</div><div class="line"></div><div class="line"><span class="comment"># Register your models here.</span></div><div class="line">admin.site.register(Article,ArticleAdmin)</div></pre></td></tr></table></figure>
+<p>后台 Markdown 编辑器效果：</p>
+<img src="/2016/09/05/搭建Django博客（6）代码高亮及后台Markdown编辑器/markdown_editor.png" alt="markdown_editor.png" title="">
       
     </div>
 
@@ -430,7 +434,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -447,7 +451,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -92,7 +92,7 @@
 <meta property="og:description" content="本项目分为以下三层架构，Web 框架为 Flask，WSGI 层选用 uWSGI ，Web 服务器采用 Nginx。">
 <meta property="og:image" content="http://yoursite.com/2017/01/23/使用uWSGI和Nginx部署Flask/web.png">
 <meta property="og:image" content="http://yoursite.com/2017/01/23/使用uWSGI和Nginx部署Flask/uwsgi.png">
-<meta property="og:updated_time" content="2017-01-25T11:33:58.180Z">
+<meta property="og:updated_time" content="2017-02-05T10:58:26.289Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用uWSGI和Nginx部署Flask">
 <meta name="twitter:description" content="本项目分为以下三层架构，Web 框架为 Flask，WSGI 层选用 uWSGI ，Web 服务器采用 Nginx。">
@@ -308,11 +308,17 @@
       
 
       
-        <p>本项目分为以下三层架构，Web 框架为 Flask，WSGI 层选用 uWSGI ，Web 服务器采用 Nginx。</p>
+        <p>本项目分为以下三层架构，Web 框架为 Flask，WSGI 层选用 <a href="http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html" target="_blank" rel="external">uWSGI</a> ，Web 服务器采用 Nginx。</p>
 <img src="/2017/01/23/使用uWSGI和Nginx部署Flask/web.png" alt="Web框架、WSGI与Web服务器的三层关系" title="Web框架、WSGI与Web服务器的三层关系">
 <a id="more"></a>
 <h2 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h2><h3 id="安装虚拟环境库-virtualenv"><a href="#安装虚拟环境库-virtualenv" class="headerlink" title="安装虚拟环境库 virtualenv"></a>安装虚拟环境库 virtualenv</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install virtualenv</div></pre></td></tr></table></figure>
-<h3 id="创建名为-flask-的虚拟环境"><a href="#创建名为-flask-的虚拟环境" class="headerlink" title="创建名为 flask 的虚拟环境"></a>创建名为 flask 的虚拟环境</h3><ol>
+<h3 id="创建名为-flask-的虚拟环境"><a href="#创建名为-flask-的虚拟环境" class="headerlink" title="创建名为 flask 的虚拟环境"></a>创建名为 flask 的虚拟环境</h3><blockquote>
+<p>注意：</p>
+<p>下面创建虚拟环境命令的命令可能会报错，因为命令执行文件可能不在当前目录</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">virtualenv flask</div><div class="line">出现报错:</div><div class="line">-bash: virtualenv:<span class="built_in">command</span> not found</div></pre></td></tr></table></figure>
+<p>正确的做法：</p>
+<ol>
 <li>使用命令查找<code>virtualenv</code>安装目录</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find / -name virtualenv</div><div class="line">输出</div><div class="line">/usr/<span class="built_in">local</span>/python3/bin/virtualenv</div></pre></td></tr></table></figure>
@@ -320,11 +326,6 @@
 <li>创建名为<code>flask</code>的虚拟环境命令</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/python3/bin/virtualenv flask</div><div class="line"></div><div class="line">下列输出表示成功</div><div class="line">Using base prefix<span class="string">'/usr/local/python3'</span></div><div class="line">New python executablein /root/env/flask/bin/python3</div><div class="line">Also creatingexecutable <span class="keyword">in</span> /root/env/flask/bin/python</div><div class="line">Installing setuptools,pip, wheel...done.</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：</p>
-<p>下面创建虚拟环境命令的命令可能会报错，因为命令执行文件可能不在当前目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; virtualenv flask</div><div class="line">&gt;</div><div class="line">&gt; 出现报错:</div><div class="line">&gt; -bash: virtualenv:<span class="built_in">command</span> not found</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-</blockquote>
 <h3 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> env/flask/bin/activate</div><div class="line">即：</div><div class="line"><span class="built_in">source</span> 虚拟环境目录/bin/activate</div></pre></td></tr></table></figure>
 <p>退出虚拟环境（直接在虚拟环境状态）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deactivate</div></pre></td></tr></table></figure>
@@ -361,7 +362,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service nginx start</div></pre></td></tr></table></figure>
 <p>关闭 Nginx</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service nginx stop</div></pre></td></tr></table></figure>
-<h2 id="安装supervisor"><a href="#安装supervisor" class="headerlink" title="安装supervisor"></a>安装supervisor</h2><p>安装完 uWSGI、Nginx 后，Nginx可以直接设置开机启动，但 uWSGI 不能直接设置开机启动，这里我选了 supervisor 来启动  uWSGI</p>
+<h2 id="安装supervisor"><a href="#安装supervisor" class="headerlink" title="安装supervisor"></a>安装supervisor</h2><p>安装完 uWSGI、Nginx 后，Nginx可以直接设置开机启动，但 uWSGI 还不能直接开机启动，这里我用 Supervisor 来启动并守护  uWSGI 运行，在全局 Python 环境安装 Supervisor：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install supervisor</div></pre></td></tr></table></figure>
 <p>配置 supervisor</p>
 <blockquote>
@@ -427,6 +428,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/" rel="prev" title="搭建Django博客（8）部署Django博客到VPS">
+                搭建Django博客（8）部署Django博客到VPS <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -498,7 +503,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -515,7 +520,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

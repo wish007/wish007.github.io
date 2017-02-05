@@ -238,6 +238,137 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/10/Git初体验/" itemprop="url">
+                  Git初体验
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-10T01:25:42+08:00" content="2016-09-10">
+              2016-09-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/10/Git初体验/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/10/Git初体验/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h1><p>从 <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> 下载安装 Git 客户端</p>
+<h1 id="连接GitHub"><a href="#连接GitHub" class="headerlink" title="连接GitHub"></a>连接GitHub</h1><blockquote>
+<p>为了将本地 Git 仓库推送到 GitHub 远程仓库，需要设置通过 SSH 加密进行数据传输</p>
+</blockquote>
+<h2 id="设置机器名"><a href="#设置机器名" class="headerlink" title="设置机器名"></a>设置机器名</h2><p>Git 是分布式版本控制系统，每个机器都必须自报家门：<code>你的名字</code>和 <code>Email 地址</code></p>
+<p>使用 GitHub 作为远程仓库，最好填上你的 GitHub 用户名和 GitHub 的注册邮箱，否则可能无法在 GitHub 中记录你的 Contribution</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.name <span class="string">"Your GitHub Name"</span></div><div class="line">$ git config --global user.email <span class="string">"email@example.com"</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<code>gitconfig</code>命令的<code>--global</code>参数，表示你这台机器上所有的 Git 仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/10/Git初体验/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/05/搭建Django博客（7）Django 博客搭建总结/" itemprop="url">
                   搭建Django博客（7）Django博客搭建总结
                 </a>
@@ -676,141 +807,19 @@
 
       
         
-          <ol>
-<li><p>注册<a href="http://duoshuo.com">多说</a>账号，得到多说<code>short_name</code></p>
+          
+            <ol>
+<li><p>注册<a href="http://duoshuo.com" target="_blank" rel="external">多说</a>账号，得到多说<code>short_name</code></p>
 </li>
 <li><p>在<code>myblog/templates</code>文件夹新建<code>duoshuo.html</code>并加入代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 多说评论框 start --&gt;</div><div class="line">	    &lt;div class="ds-thread" data-thread-key="&#123;&#123; post.id &#125;&#125;" data-title="&#123;&#123; post.title &#125;&#125;"&gt;&lt;/div&gt;</div><div class="line">&lt;!-- 多说评论框 end --&gt;</div><div class="line">&lt;!-- 多说公共JS代码 start  --&gt;</div><div class="line">	&lt;script type="text/javascript"&gt;</div><div class="line">      &lt;!-- short_name 填自己的多说名字 --&gt;</div><div class="line">	var duoshuoQuery = &#123;short_name:"wish007"&#125;;</div><div class="line">	    (function() &#123;</div><div class="line">	        var ds = document.createElement('script');</div><div class="line">	        ds.type = 'text/javascript';ds.async = true;</div><div class="line">	        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';</div><div class="line">	        ds.charset = 'UTF-8';</div><div class="line">	        (document.getElementsByTagName('head')[0]</div><div class="line">	         || document.getElementsByTagName('body')[0]).appendChild(ds);</div><div class="line">	    &#125;)();</div><div class="line">	    &lt;/script&gt;</div><div class="line">&lt;!-- 多说公共JS代码 end --&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在需要增加多说评论框的<code>&lt;/div&gt;</code>标签前面添加以下代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% include "duoshuo.html" %&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/05/搭建Django博客（4）多说评论框/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/05/搭建Django博客（3）网页处理逻辑/" itemprop="url">
-                  搭建Django博客（3）网页处理逻辑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-05T21:18:32+08:00" content="2016-09-05">
-              2016-09-05
-            </time>
-          </span>
 
           
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Django/" itemprop="url" rel="index">
-                    <span itemprop="name">Django</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/05/搭建Django博客（3）网页处理逻辑/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/05/搭建Django博客（3）网页处理逻辑/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="网页程序的逻辑"><a href="#网页程序的逻辑" class="headerlink" title="网页程序的逻辑"></a>网页程序的逻辑</h1><p>先看一下 Django 处理请求的流程</p>
-<img src="/2016/09/05/搭建Django博客（3）网页处理逻辑/flow.png" alt="Django 请求处理流程" title="Django 请求处理流程">
-<p>request 进来–&gt;<code>urls.py</code>根据 url 指配处理函数–&gt;<code>views.py</code>处理 request 请求–&gt;返回 response</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/05/搭建Django博客（3）网页处理逻辑/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
         
       
     </div>
@@ -882,7 +891,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -899,7 +908,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
