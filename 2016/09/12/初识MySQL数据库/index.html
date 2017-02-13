@@ -1,0 +1,969 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SQL,MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="SQL语句语法结束SQL语句
+多条SQL语句必须以分号;分隔
+
+mysql命令行必须使用分号来结束SQL语句
+
+MySQL不需要在单条SQL语句后加分号
+
+但某些DBMS可能强制要求加分号；所以，总是加上分号肯定没错。
+
+
+
+SQL语句大小写
+SQL 语句不区分大小写
+
+SELECT、select和 Select 都是相同的。
+许多 SQL 开发人员喜欢对所有 SQL 关键字使用大写，对所有列和表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识MySQL数据库">
+<meta property="og:url" content="http://yoursite.com/2016/09/12/初识MySQL数据库/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="SQL语句语法结束SQL语句
+多条SQL语句必须以分号;分隔
+
+mysql命令行必须使用分号来结束SQL语句
+
+MySQL不需要在单条SQL语句后加分号
+
+但某些DBMS可能强制要求加分号；所以，总是加上分号肯定没错。
+
+
+
+SQL语句大小写
+SQL 语句不区分大小写
+
+SELECT、select和 Select 都是相同的。
+许多 SQL 开发人员喜欢对所有 SQL 关键字使用大写，对所有列和表">
+<meta property="og:updated_time" content="2017-02-13T13:53:57.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识MySQL数据库">
+<meta name="twitter:description" content="SQL语句语法结束SQL语句
+多条SQL语句必须以分号;分隔
+
+mysql命令行必须使用分号来结束SQL语句
+
+MySQL不需要在单条SQL语句后加分号
+
+但某些DBMS可能强制要求加分号；所以，总是加上分号肯定没错。
+
+
+
+SQL语句大小写
+SQL 语句不区分大小写
+
+SELECT、select和 Select 都是相同的。
+许多 SQL 开发人员喜欢对所有 SQL 关键字使用大写，对所有列和表">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/12/初识MySQL数据库/"/>
+
+
+  <title> 初识MySQL数据库 | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                初识MySQL数据库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-12T19:38:13+08:00" content="2016-09-12">
+              2016-09-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/SQL/" itemprop="url" rel="index">
+                    <span itemprop="name">SQL</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/12/初识MySQL数据库/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/12/初识MySQL数据库/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="SQL语句语法"><a href="#SQL语句语法" class="headerlink" title="SQL语句语法"></a>SQL语句语法</h1><h2 id="结束SQL语句"><a href="#结束SQL语句" class="headerlink" title="结束SQL语句"></a>结束SQL语句</h2><ul>
+<li><p>多条SQL语句必须以分号<code>;</code>分隔</p>
+</li>
+<li><p>mysql命令行必须使用分号来结束SQL语句</p>
+</li>
+<li><p>MySQL不需要在单条SQL语句后加分号</p>
+<blockquote>
+<p>但某些DBMS可能强制要求加分号；所以，总是加上分号肯定没错。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="SQL语句大小写"><a href="#SQL语句大小写" class="headerlink" title="SQL语句大小写"></a>SQL语句大小写</h2><ul>
+<li><p>SQL 语句不区分大小写</p>
+<blockquote>
+<p>SELECT、select和 Select 都是相同的。</p>
+<p>许多 SQL 开发人员喜欢对所有 SQL 关键字使用大写，对所有列和表名使用小写，这样可以使代码更易于阅读和调试。</p>
+<p>但是，MySQL 在4.1及之前的版本中对有些标识符（如数据库名、表名、列名）是区分大小写的。因此，最佳方式是按照大小写的惯例。</p>
+</blockquote>
+</li>
+<li><p>处理 SQL 语句时，其中所有的空格都会被忽略</p>
+<blockquote>
+<p>SQL 语句可以在一行上给出，也可以分成许多行。显然，分成多行更便于阅读和调试。</p>
+</blockquote>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="SQL语句注释"><a href="#SQL语句注释" class="headerlink" title="SQL语句注释"></a>SQL语句注释</h2><ul>
+<li><code>--</code>到该行结束；<strong>注意：“–”后面至少要有一个空格</strong></li>
+<li><code>/*...*/</code>行中、多行注释</li>
+<li><code>#</code>在MySQL中可用，但这个不是标准的SQL注释</li>
+</ul>
+<h1 id="SHOW语句"><a href="#SHOW语句" class="headerlink" title="SHOW语句"></a>SHOW语句</h1><table>
+<thead>
+<tr>
+<th style="text-align:left">语句</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SHOW STATUS</td>
+<td style="text-align:left">显示广泛的服务器状态信息</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW GRANTS</td>
+<td style="text-align:left">显示授予用户的安全权限</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW ERRORS</td>
+<td style="text-align:left">显示服务器错误信息</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW WARNINGS</td>
+<td style="text-align:left">显示服务器警告信息</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW DATABASES</td>
+<td style="text-align:left">返回可用的数据库列表</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW TABLES</td>
+<td style="text-align:left">返回当前数据库内可用表的列表</td>
+</tr>
+<tr>
+<td style="text-align:left">SHOW COLUMNS FROM <customers></customers></td>
+<td style="text-align:left">返回<customers>表中每个字段的详细信息</customers></td>
+</tr>
+<tr>
+<td style="text-align:left">其他：</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">USE <database></database></td>
+<td style="text-align:left">选择/打开<database>数据库</database></td>
+</tr>
+<tr>
+<td style="text-align:left">HELP SHOW</td>
+<td style="text-align:left">进一步了解SHOW，显示允许的SHOW命令</td>
+</tr>
+</tbody>
+</table>
+<h1 id="常用关键字"><a href="#常用关键字" class="headerlink" title="常用关键字"></a>常用关键字</h1><table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DISTINCT</td>
+<td>检索不相同的行</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>限制返回的行</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>排序返回结果</td>
+</tr>
+<tr>
+<td>DESC</td>
+<td>降序排序</td>
+</tr>
+<tr>
+<td>ASC</td>
+<td>升序排序（默认）</td>
+</tr>
+<tr>
+<td>WHERE</td>
+<td>数据过滤</td>
+</tr>
+</tbody>
+</table>
+<h1 id="SELECT语句"><a href="#SELECT语句" class="headerlink" title="SELECT语句"></a>SELECT语句</h1><h2 id="检索数据"><a href="#检索数据" class="headerlink" title="检索数据"></a>检索数据</h2><p>使用SELECT检索数据，必须至少给出两条信息：</p>
+<ul>
+<li><p>想选择什么</p>
+</li>
+<li><p>从什么地方选择</p>
+<p>SELECT <what> FROM <where>;</where></what></p>
+</li>
+</ul>
+<p>检索单列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt;;</div></pre></td></tr></table></figure>
+<p>检索多列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column1&gt;,&lt;column2&gt;,&lt;column3&gt; FROM &lt;tables&gt;;</div></pre></td></tr></table></figure>
+<p>检索所有列（使用通配符<code>*</code>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM &lt;tables&gt;;</div></pre></td></tr></table></figure>
+<p>检索不相同的行（DISTINCT应用于所有列，不仅是前置它的列）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT DISTINCT &lt;column&gt; FROM &lt;table&gt;;</div></pre></td></tr></table></figure></p>
+<p>限制结果（返回限制的行）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;table&gt; LIMIT &lt;n&gt;;  # 返回前n行</div><div class="line">SELECT &lt;column&gt; FROM &lt;table&gt; LIMIT &lt;m&gt;,&lt;n&gt;;  # 返回第m行后面的n行</div></pre></td></tr></table></figure></p>
+<h2 id="排序检索数据"><a href="#排序检索数据" class="headerlink" title="排序检索数据"></a>排序检索数据</h2><p>按列排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column1&gt; FROM &lt;table&gt; ORDER BY &lt;column2&gt;;  # 按列1的字母顺序排列列2的检索结果</div></pre></td></tr></table></figure></p>
+<p>按多列排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column1&gt;, &lt;column2&gt;, &lt;column3&gt;, FROM &lt;table&gt; ORDER BY &lt;column4&gt;, &lt;column5&gt;;  # 先按列4再按列5排序检索结果</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：用非检索的列来排序数据也是合法的。</p>
+</blockquote>
+<p>检索数据默认升序排序，降序排序必须指定 DESC关键字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column1&gt;, &lt;column2&gt;, &lt;column3&gt;, FROM &lt;table&gt; ORDER BY &lt;column4&gt; DESC;</div></pre></td></tr></table></figure>
+<h1 id="WHERE子句"><a href="#WHERE子句" class="headerlink" title="WHERE子句"></a>WHERE子句</h1><h2 id="单WHERE子句"><a href="#单WHERE子句" class="headerlink" title="单WHERE子句"></a>单WHERE子句</h2><p>从表中检索出列中值等于5的结果；当然，<code>=</code>可以换成<code>&lt;</code> <code>&gt;</code> <code>!=</code> <code>&lt;=</code> <code>&gt;=</code> <code>BETWEEN</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; = 5;</div></pre></td></tr></table></figure>
+<p>WHERE 后面可以跟 IS NULL 来进行空值检查</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; IS NULL;</div></pre></td></tr></table></figure>
+<h2 id="组合WHERE子句"><a href="#组合WHERE子句" class="headerlink" title="组合WHERE子句"></a>组合WHERE子句</h2><p>组合WHERE子句可以使用以下操作符：</p>
+<p>AND 操作符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; = 5 AND &lt;column&gt; = 10;</div></pre></td></tr></table></figure>
+<p>OR操作符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; = 5 OR &lt;column&gt; = 10;</div></pre></td></tr></table></figure>
+<p>IN操作符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; IN (5,10);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>IN 完成的功能和 OR 完全相同，但 IN 有以下优点：</p>
+<p>更清楚、直观，IN操作符 比 OR 操作符执行更快，等等。</p>
+</blockquote>
+<p>NOT操作符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT &lt;column&gt; FROM &lt;tables&gt; WHERE &lt;column&gt; NOT IN (5,10);</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>MySQL 中只支持 NOT 对 IN、BETWEEN 和 EXISTS 子句取反</strong>，这个<strong>多数其他 DBMS 允许使用 NOT 对各种条件取反</strong>有很大的差别。</p>
+</blockquote>
+<h1 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数"></a>聚集函数</h1><p><strong>聚集函数</strong> 指运行在行组上，计算和返回单个值的函数。</p>
+<p>MySQL中常用的5个聚集函数有：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AVG()</td>
+<td style="text-align:left">返回某列的平均值</td>
+</tr>
+<tr>
+<td style="text-align:left">COUNT()</td>
+<td style="text-align:left">返回某列的行数</td>
+</tr>
+<tr>
+<td style="text-align:left">MAX()</td>
+<td style="text-align:left">返回某列的最大值</td>
+</tr>
+<tr>
+<td style="text-align:left">MIN()</td>
+<td style="text-align:left">返回某列的最小值</td>
+</tr>
+<tr>
+<td style="text-align:left">SUM()</td>
+<td style="text-align:left">返回某列值之和</td>
+</tr>
+</tbody>
+</table>
+<p>例子：</p>
+<p>使用AVG()返回products表中所有产品的平均价格：</p>
+<p>SELECT AVG(prod_price) AS avg_price FROM products;</p>
+<h1 id="GROUP-BY-amp-HAVING子句"><a href="#GROUP-BY-amp-HAVING子句" class="headerlink" title="GROUP BY &amp; HAVING子句"></a>GROUP BY &amp; HAVING子句</h1><h2 id="GROUP-BY的一些重要规定"><a href="#GROUP-BY的一些重要规定" class="headerlink" title="GROUP BY的一些重要规定"></a>GROUP BY的一些重要规定</h2><p>GROUP BY字句可以包含任意数目的列，使得能对分组进行嵌套，为数据分组提供更细致的控制。</p>
+<p>GROUP BY字句中列出的每一列都必须是检索列或有效的表达式（但不能是聚集函数）；如果SELECT中使用表达式，GROUP BY字句中也必须指定相同的表达式，不能使用别名。</p>
+<p>除聚集计算语句外，SELECT语句中的每一列都必须在GROUP BY字句中给出</p>
+<p>GROUP BY子句必须出现在WHERE子句之后，ORDER BY子句之前。</p>
+<h2 id="HAVING子句"><a href="#HAVING子句" class="headerlink" title="HAVING子句"></a>HAVING子句</h2><p>目前为止学过的所有类型的WHERE子句都可以用HAVING来替代。<strong>唯一不同的是：WHERE过滤行，HAVING过滤分组。</strong></p>
+<p>HAVING和WHERE的差别：<strong>WHERE在数据分组前进行过滤，HAVING在数据分组后进行过滤。</strong></p>
+<h2 id="GROUP-BY-amp-ORDER-BY"><a href="#GROUP-BY-amp-ORDER-BY" class="headerlink" title="GROUP BY &amp; ORDER BY"></a>GROUP BY &amp; ORDER BY</h2><p>GROUP BY（分组）和ORDER BY（排序）的差别：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">ORDER BY</th>
+<th style="text-align:left">GROUP BY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">输出</td>
+<td style="text-align:left">排序产生的输出</td>
+<td style="text-align:left">输出分组行（但可能不是分组的顺序）</td>
+</tr>
+<tr>
+<td style="text-align:left">怎么使用</td>
+<td style="text-align:left">任意列都可以使用（甚至非选择列也可以使用）</td>
+<td style="text-align:left">只能使用选择列或表达式列，而且必须使用每个选择列的表达式</td>
+</tr>
+<tr>
+<td style="text-align:left">必须使用</td>
+<td style="text-align:left">不一定需要</td>
+<td style="text-align:left">如果与聚集函数一起使用列或表达式，则必须使用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意：</p>
+<p>一般在使用GROUP BY子句时，应该给出ORDER BY子句；不能仅依赖GROUP BY排序数据，这是保证数据正确排序的唯一方法。</p>
+</blockquote>
+<p>例子：检索总计订单价格大于等于50的订单的订单号和总计订单价格，并按总计订单价格排序</p>
+<p>SELECT order_num, SUM(quantity*item_price) AS ordertotal</p>
+<p>FROM orderitems</p>
+<p>GROUP BY order_num</p>
+<p>HAVING SUM(quantity*item_price) &gt;= 50</p>
+<p>ORDER BY ordertotal</p>
+<h1 id="SELECT子句的顺序"><a href="#SELECT子句的顺序" class="headerlink" title="SELECT子句的顺序"></a>SELECT子句的顺序</h1><table>
+<thead>
+<tr>
+<th style="text-align:left">子句</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">是否必须使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SELECT</td>
+<td style="text-align:left">要返回的列或表达式</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">FROM</td>
+<td style="text-align:left">从中检索数据的表</td>
+<td style="text-align:left">仅在从表选择数据时使用</td>
+</tr>
+<tr>
+<td style="text-align:left">WHERE</td>
+<td style="text-align:left">行级过滤</td>
+<td style="text-align:left">否</td>
+</tr>
+<tr>
+<td style="text-align:left">GROUP BY</td>
+<td style="text-align:left">分组说明</td>
+<td style="text-align:left">仅在按组计算聚集时使用</td>
+</tr>
+<tr>
+<td style="text-align:left">HAVING</td>
+<td style="text-align:left">组级过滤</td>
+<td style="text-align:left">否</td>
+</tr>
+<tr>
+<td style="text-align:left">ORDER BY</td>
+<td style="text-align:left">输出排序顺序</td>
+<td style="text-align:left">否</td>
+</tr>
+<tr>
+<td style="text-align:left">LIMIT</td>
+<td style="text-align:left">要检索的行数</td>
+<td style="text-align:left">否</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag">#SQL</a>
+          
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/" rel="next" title="用Requests和BeautifulSoup爬取妹子图">
+                <i class="fa fa-chevron-left"></i> 用Requests和BeautifulSoup爬取妹子图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" rel="prev" title="模拟登陆无线路由器（TL-WDR5600）">
+                模拟登陆无线路由器（TL-WDR5600） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/12/初识MySQL数据库/"
+           data-title="初识MySQL数据库" data-url="http://yoursite.com/2016/09/12/初识MySQL数据库/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL语句语法"><span class="nav-number">1.</span> <span class="nav-text">SQL语句语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#结束SQL语句"><span class="nav-number">1.1.</span> <span class="nav-text">结束SQL语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL语句大小写"><span class="nav-number">1.2.</span> <span class="nav-text">SQL语句大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL语句注释"><span class="nav-number">1.3.</span> <span class="nav-text">SQL语句注释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SHOW语句"><span class="nav-number">2.</span> <span class="nav-text">SHOW语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用关键字"><span class="nav-number">3.</span> <span class="nav-text">常用关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SELECT语句"><span class="nav-number">4.</span> <span class="nav-text">SELECT语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#检索数据"><span class="nav-number">4.1.</span> <span class="nav-text">检索数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序检索数据"><span class="nav-number">4.2.</span> <span class="nav-text">排序检索数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WHERE子句"><span class="nav-number">5.</span> <span class="nav-text">WHERE子句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单WHERE子句"><span class="nav-number">5.1.</span> <span class="nav-text">单WHERE子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合WHERE子句"><span class="nav-number">5.2.</span> <span class="nav-text">组合WHERE子句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聚集函数"><span class="nav-number">6.</span> <span class="nav-text">聚集函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GROUP-BY-amp-HAVING子句"><span class="nav-number">7.</span> <span class="nav-text">GROUP BY & HAVING子句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GROUP-BY的一些重要规定"><span class="nav-number">7.1.</span> <span class="nav-text">GROUP BY的一些重要规定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HAVING子句"><span class="nav-number">7.2.</span> <span class="nav-text">HAVING子句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GROUP-BY-amp-ORDER-BY"><span class="nav-number">7.3.</span> <span class="nav-text">GROUP BY & ORDER BY</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SELECT子句的顺序"><span class="nav-number">8.</span> <span class="nav-text">SELECT子句的顺序</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

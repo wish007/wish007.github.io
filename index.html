@@ -307,13 +307,177 @@
 
       
         
-          <p>本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI层使用 <a href="http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html">uWSGI</a>，Web 应用为 Django。</p>
+          <p>本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 <a href="http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html">uWSGI</a>，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。</p>
 <img src="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png" alt="Nginx + uWSGI + Django + Supervisor" title="Nginx + uWSGI + Django + Supervisor">
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/01/Windows下Python2和Python3共存的设置方法/" itemprop="url">
+                  Windows下Python2和Python3共存的设置方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-01T20:06:10+08:00" content="2017-02-01">
+              2017-02-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/01/Windows下Python2和Python3共存的设置方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/01/Windows下Python2和Python3共存的设置方法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前在自己电脑上写代码、跑程序用的都是 Python3，基本不会出现必须用 Python2 的情况。然而，最近 clone 了别人的项目下来学习，发现必须用 Py2 才能正常运行，否则不断报错，而且是外部模块报的错误，调试起来实在无力，遂决定在电脑上同时装上 Py2 和Py3，顺便把过程记录下来。</p>
+<h1 id="安装Python2-amp-3"><a href="#安装Python2-amp-3" class="headerlink" title="安装Python2&amp;3"></a>安装Python2&amp;3</h1><ul>
+<li><p>分别下载 Python2 和 Python3 安装包，安装顺序没有要求，安装时选上加入<code>系统变量</code>中的<code>Path</code>选项。都安装好后检查<code>系统变量</code>中的<code>Path</code>中有没加入以下内容；没有加入，就手动添加，记得每一项都必须用 <code>;</code>分隔</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">C:\Program Files (x86)\Python27\</div><div class="line">C:\Program Files (x86)\Python27\Scripts  <span class="comment">#此目录暂时没有，安装完pip后才生成</span></div><div class="line">C:\Program Files (x86)\Python34\</div><div class="line">C:\Program Files (x86)\Python34\Scripts</div></pre></td></tr></table></figure>
+</li>
+<li><p>打开 Python2 和 Python3 的安装目录，确保<code>PythonX\</code>目录下没有同名的<code>python.exe</code>文件，可以参考以下修改</p>
+<p>Python27\</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">python.exe  --&gt;  python2.exe</div><div class="line">pythonw.exe  --&gt;  pythonw2.exe</div></pre></td></tr></table></figure>
+<p>Python34\</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">python.exe  --&gt;  不用修改</div><div class="line">pythonw.exe  --&gt;  不用修改</div><div class="line"></div><div class="line">当然你也可以相应修改为 python3.exe 和 pythonw3.exe，因为我一般用 Python3，为了方便就保留默认</div></pre></td></tr></table></figure>
+<p>这样修改后，在<code>cmd</code>中就可以直接用 <code>python2</code>运行<code>python2</code>，用 <code>python</code>运行<code>python3</code>了。</p>
+<p>​</p>
+</li>
+</ul>
+<h1 id="安装pip和easy-install"><a href="#安装pip和easy-install" class="headerlink" title="安装pip和easy_install"></a>安装pip和easy_install</h1><ul>
+<li><p>Python3 安装包中已经包含安装 pip 的选项了，安装时选上就能自动安装好<code>pip</code>和<code>easy_install</code>，它们的运行程序保存目录在<code>PythonX\Scripts\</code>，如果安装时忘了选上，可以参照下面 Python2 安装 pip 的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python get-pip.py</div></pre></td></tr></table></figure>
+</li>
+<li><p>Python2 安装包没有包含安装 pip 的选项，可以在打开 <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="external">https://bootstrap.pypa.io/get-pip.py</a>将程序右键另存为<code>get-pip.py</code>文件，记得使用管理员身份运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python2 get-pip.py</div></pre></td></tr></table></figure>
+</li>
+<li><p>最后，打开<code>Python2X\Scripts\</code>和<code>Python3X\Scripts\</code>目录，确保两个目录下没有同名的<code>pip.exe</code>和<code>easy_install.exe</code>文件，可以参考以下修改</p>
+<p>Python27\Scripts\</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pip.exe  --&gt;  pip2.exe</div><div class="line">easy_install.exe  --&gt;  easy_install2.exe</div></pre></td></tr></table></figure>
+<p>Python34\Scripts\</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pip.exe  --&gt;  不用修改</div><div class="line">easy_install.exe  --&gt;  不用修改</div><div class="line"></div><div class="line">同上，你也可以相应修改为 pip3.exe 和 easy_install3.exe，因为我一般用 Python3，为了方便就保留默认</div></pre></td></tr></table></figure>
+<p>这样修改后，在<code>cmd</code>中就可以直接用 <code>pip2</code>运行<code>python2</code>中的<code>pip</code>，用  <code>pip</code>运行<code>python3</code>中的<code>pip</code>；<code>easy_install</code>同理。</p>
+</li>
+</ul>
+<h1 id="安装虚拟环境virtualenv"><a href="#安装虚拟环境virtualenv" class="headerlink" title="安装虚拟环境virtualenv"></a>安装虚拟环境virtualenv</h1><ul>
+<li><p>Python3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>Python2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip2 install virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>因为默认安装好的<code>virtualenv</code>程序文件名为<code>virtualenv.exe</code>，显然 Python2 和 Python3 不能有同名的<code>virtualenv.exe</code>，于是可以参考以下修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Python2:</div><div class="line">virtualenv.exe  --&gt;  virtualenv2.exe</div><div class="line"></div><div class="line">Python3:</div><div class="line">virtualenv.exe  --&gt;  不用修改</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><blockquote>
+<p>关键的步骤是系统变量中设置的目录下不能有同名的文件，否则系统怎么知道你要调用哪个文件，改掉同名的文件就行了：)</p>
+</blockquote>
+<p>经过上面的设置，就可以在使用命令行的时候方便的区分 Python2 还是 Python3 了，有些项目只支持 Python2，可以创建 Python2 的虚拟环境，方便本地调试，更重要的是可以少踩一些坑(╯‵□′)╯︵┻━┻</p>
+
+          
         
       
     </div>
@@ -722,139 +886,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/" itemprop="url">
-                  用Requests和BeautifulSoup爬取妹子图
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-10T16:58:47+08:00" content="2016-09-10">
-              2016-09-10
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/10/用Requests和BeautifulSoup爬取妹子图/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>其实这个爬虫程序已经写好大半年了，中途有做过一些修改，现在觉得有必要记录一下过程。</p>
-<p>说到爬虫，大多为了批量爬取各种信息，但我写这个爬虫的初衷倒不是为了妹子图片（虽然真的下载了不少妹子图片⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄，更多是为了练习 Python 算法和常用库，顺带还了解了 HTTP 请求的一些细节。</p>
-<h1 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h1><ul>
-<li><a href="http://docs.python-requests.org/zh_CN/latest/">Requests</a> ：用来发送 HTTP 请求，获取 HTTP 响应</li>
-<li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/">Beautiful Soup</a> ：从获取到的 HTML 文件中提取数据</li>
-<li>Chrome开发者工具：查看 HTTP 通信过程，读取 HTML 源码</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/10/用Requests和BeautifulSoup爬取妹子图/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -895,7 +931,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
