@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Django,Nginx,uWSGI,supervisor,VPS,Linux,WSGI," />
+  <meta name="keywords" content="Nginx,uWSGI,supervisor,Django,VPS,Linux,WSGI," />
 
 
 
@@ -84,17 +84,23 @@
 
 
 
-<meta name="description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。">
+<meta name="description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。
+
+项目地址GitHub - wish007/django_blog">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建Django博客（8）部署Django博客到VPS">
 <meta property="og:url" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/index.html">
 <meta property="og:site_name" content="wish007">
-<meta property="og:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。">
+<meta property="og:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。
+
+项目地址GitHub - wish007/django_blog">
 <meta property="og:image" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png">
-<meta property="og:updated_time" content="2017-02-07T16:20:06.787Z">
+<meta property="og:updated_time" content="2017-02-13T15:06:07.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建Django博客（8）部署Django博客到VPS">
-<meta name="twitter:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。">
+<meta name="twitter:description" content="本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 uWSGI，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。
+
+项目地址GitHub - wish007/django_blog">
 <meta name="twitter:image" content="http://yoursite.com/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png">
 
 
@@ -309,6 +315,7 @@
       
         <p>本项目采用三层架构部署，Nginx 作为反向代理服务器，WSGI 层使用 <a href="http://uwsgi-docs-cn.readthedocs.io/zh_CN/latest/WSGIquickstart.html" target="_blank" rel="external">uWSGI</a>，Web 应用为 Django；同时，使用  Supervisor 进程守护工具守护 uWSGI 进程。</p>
 <img src="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/deploy.png" alt="Nginx + uWSGI + Django + Supervisor" title="Nginx + uWSGI + Django + Supervisor">
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a href="https://github.com/wish007/django_blog" target="_blank" rel="external">GitHub - wish007/django_blog</a></p>
 <a id="more"></a>
 <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>在开发阶段，调试模式处于打开状态可以方便我们调试，但部署到生产环境显然不能这么做，必须对 Django 项目设置文件<code>settings.py</code>做些修改，提升系统安全性：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SECRET_KEY = 'This is a secret key!'  --&gt;</div><div class="line">SECRET_KEY = 'sqDZl^NeQ7SB1wJqeDoxhpf8RnTA1hMhJd5NQApcLizIx*!GRe'  </div><div class="line"># 此项修改尤为重要，自行生成一串足够长和复杂的 KEY，如果你把项目代码放到 GitHub，也记得要在生产环境修改此字段</div><div class="line"></div><div class="line">DEBUG = True --&gt; DEBUG = False  #关闭调试模式</div><div class="line">ALLOWED_HOSTS = [] --&gt; ALLOWED_HOSTS = ['*']  #允许所有IP访问，否则他人无法访问</div></pre></td></tr></table></figure>
@@ -418,13 +425,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Django/" rel="tag">#Django</a>
-          
             <a href="/tags/Nginx/" rel="tag">#Nginx</a>
           
             <a href="/tags/uWSGI/" rel="tag">#uWSGI</a>
           
             <a href="/tags/supervisor/" rel="tag">#supervisor</a>
+          
+            <a href="/tags/Django/" rel="tag">#Django</a>
           
             <a href="/tags/VPS/" rel="tag">#VPS</a>
           
@@ -574,7 +581,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正式部署"><span class="nav-number">2.</span> <span class="nav-text">正式部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建运行环境"><span class="nav-number">2.1.</span> <span class="nav-text">创建运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">2.2.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置uWSGI"><span class="nav-number">2.3.</span> <span class="nav-text">配置uWSGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Nginx"><span class="nav-number">2.4.</span> <span class="nav-text">配置Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Supervisor"><span class="nav-number">2.5.</span> <span class="nav-text">配置Supervisor</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Django静态文件处理"><span class="nav-number">3.</span> <span class="nav-text">Django静态文件处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶阅读"><span class="nav-number">4.</span> <span class="nav-text">进阶阅读</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#项目地址"><span class="nav-number">1.</span> <span class="nav-text">项目地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正式部署"><span class="nav-number">3.</span> <span class="nav-text">正式部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建运行环境"><span class="nav-number">3.1.</span> <span class="nav-text">创建运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">3.2.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置uWSGI"><span class="nav-number">3.3.</span> <span class="nav-text">配置uWSGI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Nginx"><span class="nav-number">3.4.</span> <span class="nav-text">配置Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Supervisor"><span class="nav-number">3.5.</span> <span class="nav-text">配置Supervisor</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Django静态文件处理"><span class="nav-number">4.</span> <span class="nav-text">Django静态文件处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶阅读"><span class="nav-number">5.</span> <span class="nav-text">进阶阅读</span></a></li></ol></div>
             
           </div>
         </section>

@@ -94,7 +94,7 @@
 <meta property="og:description" content="前言之前在自己电脑上写代码、跑程序用的都是 Python3，基本不会出现必须用 Python2 的情况。然而，最近 clone 了别人的项目下来学习，发现必须用 Py2 才能正常运行，否则不断报错，而且是外部模块报的错误，调试起来实在无力，遂决定在电脑上同时装上 Py2 和Py3，顺便把过程记录下来。
 安装Python2&amp;amp;3
 分别下载 Python2 和 Python3 安装包，安装顺序没">
-<meta property="og:updated_time" content="2017-02-13T14:08:06.649Z">
+<meta property="og:updated_time" content="2017-02-13T14:56:25.357Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows下Python2和Python3共存的设置方法">
 <meta name="twitter:description" content="前言之前在自己电脑上写代码、跑程序用的都是 Python3，基本不会出现必须用 Python2 的情况。然而，最近 clone 了别人的项目下来学习，发现必须用 Py2 才能正常运行，否则不断报错，而且是外部模块报的错误，调试起来实在无力，遂决定在电脑上同时装上 Py2 和Py3，顺便把过程记录下来。
@@ -316,6 +316,9 @@
 <li><p>分别下载 Python2 和 Python3 安装包，安装顺序没有要求，安装时选上加入<code>系统变量</code>中的<code>Path</code>选项。都安装好后检查<code>系统变量</code>中的<code>Path</code>中有没加入以下内容；没有加入，就手动添加，记得每一项都必须用 <code>;</code>分隔</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">C:\Program Files (x86)\Python27\</div><div class="line">C:\Program Files (x86)\Python27\Scripts  <span class="comment">#此目录暂时没有，安装完pip后才生成</span></div><div class="line">C:\Program Files (x86)\Python34\</div><div class="line">C:\Program Files (x86)\Python34\Scripts</div></pre></td></tr></table></figure>
 </li>
+</ul>
+<a id="more"></a>
+<ul>
 <li><p>打开 Python2 和 Python3 的安装目录，确保<code>PythonX\</code>目录下没有同名的<code>python.exe</code>文件，可以参考以下修改</p>
 <p>Python27\</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">python.exe  --&gt;  python2.exe</div><div class="line">pythonw.exe  --&gt;  pythonw2.exe</div></pre></td></tr></table></figure>

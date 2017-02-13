@@ -308,6 +308,8 @@
       
         
           <h1 id="最简便的方法"><a href="#最简便的方法" class="headerlink" title="最简便的方法"></a>最简便的方法</h1><p>如果你的Hexo项目中只有少量图片，那最简单的方法就是将图片放在<code>source/images</code> 文件夹中；然后在文章中通过类似于 <code>![](/images/image.jpg)</code> 的方法访问它们；但是当文章多了以后，这种方式显然不便于管理文章中图片。</p>
+<h1 id="更好的方法"><a href="#更好的方法" class="headerlink" title="更好的方法"></a>更好的方法</h1><p>Hexo 提供了更组织化的方式来管理资源，可以通过修改<code>_config.yml</code>配置文件中的<code>post_asset_folder</code>选项为<code>ture</code>来打开</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">post_asset_folder: <span class="literal">true</span></div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/09/05/在Hexo中插入图片/#more" rel="contents">
               阅读全文 &raquo;
@@ -429,8 +431,7 @@
 
       
         
-          
-            <h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>virtualenv 用于创建独立的 Python 环境，多个Python相互独立，互不影响，它能够：</p>
+          <h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>virtualenv 用于创建独立的 Python 环境，多个Python相互独立，互不影响，它能够：</p>
 <ol>
 <li>在没有权限的情况下安装新套件</li>
 <li>隔离项目之间的第三方包依赖</li>
@@ -438,61 +439,11 @@
 </ol>
 <p><strong>安装方法</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install virtualenv</div></pre></td></tr></table></figure>
-<p><strong>使用</strong></p>
-<ul>
-<li><p>创建虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv  虚拟环境名称</div></pre></td></tr></table></figure>
-</li>
-<li><p>默认情况下，虚拟环境会依赖系统环境中的 site packages，就是说系统中已经安装好的第三方 package 也会安装在虚拟环境中，如果不想依赖这些 package ，那么可以加上参数 –no-site-packages 建立虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv --no-site-packages 虚拟环境名称</div></pre></td></tr></table></figure>
-</li>
-<li><p>激活虚拟环境</p>
-<p>Linux</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> path/to/virtualenv/bin/activate</div></pre></td></tr></table></figure>
-<p>Windows</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">path\to\virtualenv\Scripts\activate</div></pre></td></tr></table></figure>
-</li>
-<li><p>退出虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deactivate</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="virtualenvwrapper"><a href="#virtualenvwrapper" class="headerlink" title="virtualenvwrapper"></a>virtualenvwrapper</h1><p>Virtualenvwrapper 是 Virtualenv 的一个扩展，可使虚拟环境的管理变得更容易，Virtualenvwrapper 提供以下功能：</p>
-<ol>
-<li>将所有的虚拟环境整合在一个目录下</li>
-<li>管理（新增、移除、复制）所有的虚拟环境</li>
-<li>可以使用一个命令切换虚拟环境</li>
-<li>Tab 补全虚拟环境的名字</li>
-<li>每个操作都提供允许使用者自定的 hooks</li>
-<li>可撰写容易分享的 extension plugin 系统</li>
-</ol>
-<p><strong>安装</strong></p>
-<p>Linux</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install virtualenvwrapper</div></pre></td></tr></table></figure>
-<p>Windows</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install virtualenvwrapper-win</div></pre></td></tr></table></figure>
-<p><strong>使用</strong></p>
-<p>列出虚拟环境列表</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">workon</div><div class="line"><span class="comment"># 或者</span></div><div class="line">lsvirtualenv</div></pre></td></tr></table></figure>
-<p>新建虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkvirtualenv 虚拟环境名称</div></pre></td></tr></table></figure>
-<p>启动 / 切换虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">workon 虚拟环境名称</div></pre></td></tr></table></figure>
-<p>删除虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rmvirtualenv 虚拟环境名称</div></pre></td></tr></table></figure>
-<p>离开虚拟环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deactivate</div></pre></td></tr></table></figure>
-<p><strong>自定义新建虚拟环境的保存目录</strong></p>
-<p>Linux</p>
-<p>修改~/.bash_profile或其它环境变量相关文件，添加以下语句</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> WORKON_HOME=<span class="variable">$HOME</span>/.virtualenvs</div></pre></td></tr></table></figure>
-<p>Windows</p>
-<p>Windows下默认虚拟环境是放在用户名下面的 Envs 中的，与桌面、我的文档、下载等文件夹放在一起。更改方法：计算机–&gt;属性–&gt;高级系统设置–&gt;环境变量–&gt;添加<code>WORKON_HOME</code></p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>使用 virtualenv + virtualenvwrapper 可以很好的完成环境隔离，保证对每个应用的环境是干净的，可以通过以下 2条命令导出包依赖或安装包依赖：</p>
-<p><strong>导出包依赖</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip freeze &gt; requirements.txt</div></pre></td></tr></table></figure>
-<p><strong>安装包依赖</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install -r requirements.txt</div></pre></td></tr></table></figure>
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/04/优雅地使用Python之环境管理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
