@@ -1,0 +1,687 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="asyncio,aiohttp,coroutine,异步,爬虫," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="asyncioasyncio是 Python 3.4 中引入的标准库，直接内置了对异步IO的支持。
+asyncio 的编程模型就是一个消息循环，从 asyncio 模块中直接获取一个EventLoop的引用，然后把需要执行的协程扔到EventLoop中执行，就实现了异步IO。
+下面是来自于 Python 官方文档的例子（请使用 Python3.4 运行），我对它做了一点修改，增加了 2个任务，方便">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用asyncio和aiohttp实现异步IO">
+<meta property="og:url" content="http://yoursite.com/2017/02/25/使用asyncio和aiohttp实现异步IO/index.html">
+<meta property="og:site_name" content="wish007">
+<meta property="og:description" content="asyncioasyncio是 Python 3.4 中引入的标准库，直接内置了对异步IO的支持。
+asyncio 的编程模型就是一个消息循环，从 asyncio 模块中直接获取一个EventLoop的引用，然后把需要执行的协程扔到EventLoop中执行，就实现了异步IO。
+下面是来自于 Python 官方文档的例子（请使用 Python3.4 运行），我对它做了一点修改，增加了 2个任务，方便">
+<meta property="og:image" content="http://yoursite.com/2017/02/25/使用asyncio和aiohttp实现异步IO/eventloop.png">
+<meta property="og:updated_time" content="2017-02-25T14:10:44.610Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用asyncio和aiohttp实现异步IO">
+<meta name="twitter:description" content="asyncioasyncio是 Python 3.4 中引入的标准库，直接内置了对异步IO的支持。
+asyncio 的编程模型就是一个消息循环，从 asyncio 模块中直接获取一个EventLoop的引用，然后把需要执行的协程扔到EventLoop中执行，就实现了异步IO。
+下面是来自于 Python 官方文档的例子（请使用 Python3.4 运行），我对它做了一点修改，增加了 2个任务，方便">
+<meta name="twitter:image" content="http://yoursite.com/2017/02/25/使用asyncio和aiohttp实现异步IO/eventloop.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/25/使用asyncio和aiohttp实现异步IO/"/>
+
+
+  <title> 使用asyncio和aiohttp实现异步IO | wish007 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wish007</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用asyncio和aiohttp实现异步IO
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-25T20:36:18+08:00" content="2017-02-25">
+              2017-02-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/25/使用asyncio和aiohttp实现异步IO/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/25/使用asyncio和aiohttp实现异步IO/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="asyncio"><a href="#asyncio" class="headerlink" title="asyncio"></a>asyncio</h1><p>asyncio是 Python 3.4 中引入的标准库，直接内置了对异步IO的支持。</p>
+<p>asyncio 的编程模型就是一个消息循环，从 asyncio 模块中直接获取一个<code>EventLoop</code>的引用，然后把需要执行的协程扔到<code>EventLoop</code>中执行，就实现了异步IO。</p>
+<p>下面是来自于 Python 官方文档的例子（请使用 Python3.4 运行），我对它做了一点修改，增加了 2个任务，方便更好地理解 <a href="https://docs.python.org/3.4/library/asyncio-task.html#example-hello-world-coroutine" target="_blank" rel="external">链接&gt;&gt;&gt;</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> asyncio</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span></div><div class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</div><div class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> asyncio.sleep(<span class="number">2.0</span>)</div><div class="line">    <span class="keyword">return</span> x + y</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span></div><div class="line">    result = <span class="keyword">yield</span> <span class="keyword">from</span> compute(x, y)</div><div class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</div><div class="line"></div><div class="line">loop = asyncio.get_event_loop()</div><div class="line">tasks = [print_sum(<span class="number">1</span>, <span class="number">2</span>), print_sum(<span class="number">3</span>, <span class="number">4</span>), print_sum(<span class="number">5</span>, <span class="number">6</span>)]</div><div class="line">loop.run_until_complete(asyncio.wait(tasks))</div><div class="line">loop.close()</div><div class="line"></div><div class="line"><span class="comment"># OUTPUT</span></div><div class="line">Compute <span class="number">3</span> + <span class="number">4</span> ...</div><div class="line">Compute <span class="number">5</span> + <span class="number">6</span> ...</div><div class="line">Compute <span class="number">1</span> + <span class="number">2</span> ...</div><div class="line"><span class="comment"># 大约 1 秒以后</span></div><div class="line"><span class="number">3</span> + <span class="number">4</span> = <span class="number">7</span></div><div class="line"><span class="number">5</span> + <span class="number">6</span> = <span class="number">11</span></div><div class="line"><span class="number">1</span> + <span class="number">2</span> = <span class="number">3</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>如果是一个任务，就是下面的情况：</p>
+<img src="/2017/02/25/使用asyncio和aiohttp实现异步IO/eventloop.png" alt="EventLoop" title="EventLoop">
+<p><code>@asyncio.coroutine</code>把一个<code>generator</code>标记为<code>coroutine</code>类型，然后把这个<code>coroutine</code>扔到<code>EventLoop</code>中执行。</p>
+<p><code>yield from</code>语法可以让我们方便地调用另一个<code>generator</code>。由于<code>asyncio.sleep()</code>也是一个<code>coroutine</code>，所以线程不会等待<code>asyncio.sleep()</code>，而是直接中断并执行下一个消息循环。当<code>asyncio.sleep()</code>返回时，线程就可以从<code>yield from</code>拿到返回值<code>return x + y</code>，然后接着执行下一行语句<code>print(&quot;%s + %s = %s&quot; % (x, y, result))</code></p>
+<p>把<code>asyncio.sleep(2.0)</code>看成是一个耗时1秒的IO操作，在此期间，主线程并未等待，而是去执行<code>EventLoop</code>中其他可以执行的<code>coroutine</code>了，因此可以实现并发执行。</p>
+<h1 id="aiohttp"><a href="#aiohttp" class="headerlink" title="aiohttp"></a>aiohttp</h1><p><code>asyncio</code>可以实现单线程并发IO操作，它实现了TCP、UDP、SSL 等协议；<code>aiohttp</code>则是基于<code>asyncio</code>实现的 HTTP 框架，使用它可以实现高并发的 HTTP 请求。</p>
+<p>由于 aiohttp 是第三方库，使用前先安装：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install aiohttp</div></pre></td></tr></table></figure>
+<p>先看一下 aiohttp 官网的例子（请使用 Python 3.5+ 运行），<a href="http://aiohttp.readthedocs.io/en/stable/" target="_blank" rel="external">官网链接&gt;&gt;&gt;</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> aiohttp</div><div class="line"><span class="keyword">import</span> asyncio</div><div class="line"><span class="keyword">import</span> async_timeout</div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(session, url)</span>:</span></div><div class="line">    <span class="keyword">with</span> async_timeout.timeout(<span class="number">10</span>):</div><div class="line">        <span class="keyword">async</span> <span class="keyword">with</span> session.get(url) <span class="keyword">as</span> response:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">await</span> response.text()</div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></div><div class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession(loop=loop) <span class="keyword">as</span> session:</div><div class="line">        html = <span class="keyword">await</span> fetch(session, <span class="string">'http://python.org'</span>)</div><div class="line">        print(html)</div><div class="line"></div><div class="line">loop = asyncio.get_event_loop()</div><div class="line">loop.run_until_complete(main(loop))</div></pre></td></tr></table></figure>
+<p>由于我用的装的是 Python 3.4 ，对它稍作修改即可，修改方式参见官网 Note</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Note:</div><div class="line">Throughout this documentation, examples utilize the async/await syntax introduced by PEP 492 that is only valid for Python 3.5+.</div><div class="line"></div><div class="line">If you are using Python 3.4, please replace await with yield from and async def with a @coroutine decorator. For example, this:</div><div class="line"></div><div class="line">async def coro(...):</div><div class="line">    ret = await f()</div><div class="line">should be replaced by:</div><div class="line"></div><div class="line">@asyncio.coroutine</div><div class="line">def coro(...):</div><div class="line">    ret = yield from f()</div></pre></td></tr></table></figure>
+<p>修改后</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> aiohttp</div><div class="line"><span class="keyword">import</span> asyncio</div><div class="line"><span class="keyword">import</span> async_timeout</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(session, url)</span>:</span></div><div class="line">    <span class="keyword">with</span> async_timeout.timeout(<span class="number">10</span>):</div><div class="line">        response = <span class="keyword">yield</span> <span class="keyword">from</span> session.get(url)</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">yield</span> <span class="keyword">from</span> response.text())</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></div><div class="line">    session = aiohttp.ClientSession(loop=loop)</div><div class="line">    html = <span class="keyword">yield</span> <span class="keyword">from</span> fetch(session, <span class="string">'http://zhihu.com'</span>)</div><div class="line">    print(html)</div><div class="line"></div><div class="line">loop = asyncio.get_event_loop()</div><div class="line">loop.run_until_complete(main(loop))</div></pre></td></tr></table></figure>
+<h1 id="异步-IO"><a href="#异步-IO" class="headerlink" title="异步 IO"></a>异步 IO</h1><p>因为之前写过一个图片爬虫，明显是属于网络 IO 型的应用，如果用异步的方式来爬取图片会如何？</p>
+<p>下面直接看代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> asyncio</div><div class="line"><span class="keyword">import</span> aiohttp</div><div class="line"></div><div class="line"></div><div class="line">header = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) \</span></div><div class="line">          Chrome/49.0.2623.110 Safari/537.36', <span class="string">'content-encoding'</span>: <span class="string">'gzip'</span></div><div class="line">          &#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">urls</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""返回需要下载图片的网页URL"""</span></div><div class="line"></div><div class="line">    start_url = int(input(<span class="string">'请输入开始页面编号：'</span>))</div><div class="line">    end_url = int(input(<span class="string">'请输入结束页面编号：'</span>))</div><div class="line">    <span class="keyword">while</span> start_url &lt; end_url:</div><div class="line">        <span class="keyword">yield</span> <span class="string">'http://www.meizitu.com/a/%s.html'</span> % start_url</div><div class="line">        start_url += <span class="number">1</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect_picture_link</span><span class="params">(soup)</span>:</span></div><div class="line">    <span class="string">"""将网页URL中的图片URL抓取出来"""</span></div><div class="line"></div><div class="line">    picture_link_list = []</div><div class="line">    <span class="keyword">for</span> link_node <span class="keyword">in</span> soup.find_all(class_=<span class="string">'postContent'</span>):</div><div class="line">        <span class="keyword">for</span> link <span class="keyword">in</span> link_node.find_all(<span class="string">'img'</span>):</div><div class="line">            picture_link_list.append(link.get(<span class="string">'src'</span>))</div><div class="line">    <span class="keyword">return</span> picture_link_list</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_directory</span><span class="params">(url, soup)</span>:</span></div><div class="line">    <span class="string">"""创建以标题为名的文件夹"""</span></div><div class="line"></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        title = soup.title.string[:<span class="number">-6</span>]</div><div class="line">        url_cut = len(url) - <span class="number">5</span></div><div class="line">        url_id = url[<span class="number">25</span>:url_cut]</div><div class="line">        <span class="comment"># Python文件的绝对路径</span></div><div class="line">        path = os.path.dirname(os.path.realpath(__file__))</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title):</div><div class="line">            os.mkdir(path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title)</div><div class="line">        dir = path + <span class="string">'/'</span> + url_id + <span class="string">' '</span> + title + <span class="string">'/'</span></div><div class="line">        <span class="keyword">return</span> dir</div><div class="line">    <span class="keyword">except</span> TypeError:</div><div class="line">        print(<span class="string">'页面无图片! %s'</span> % url)</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_picture</span><span class="params">(picture_link, dir, header)</span>:</span></div><div class="line">    <span class="string">"""下载并保存图片"""</span></div><div class="line"></div><div class="line">    picture_name = picture_link[<span class="number">-18</span>:].replace(<span class="string">'/'</span>, <span class="string">'-'</span>)</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">with</span> aiohttp.Timeout(<span class="number">20</span>):</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir + picture_name):</div><div class="line">                print(<span class="string">'开始下载图片 %s'</span> % picture_link)</div><div class="line">                r = <span class="keyword">yield</span> <span class="keyword">from</span> aiohttp.request(<span class="string">'GET'</span>,</div><div class="line">                                               picture_link, headers=header)</div><div class="line">                picture = <span class="keyword">yield</span> <span class="keyword">from</span> r.read()</div><div class="line">                <span class="keyword">with</span> open(dir + picture_name, <span class="string">'wb'</span>) <span class="keyword">as</span> file:</div><div class="line">                    file.write(picture)</div><div class="line">                    print(<span class="string">'图片下载成功 %s'</span> % picture_name)</div><div class="line">    <span class="keyword">except</span> asyncio.TimeoutError:</div><div class="line">        print(<span class="string">'下载图片超时 %s'</span> % picture_name)</div><div class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">        <span class="keyword">raise</span> e</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_html</span><span class="params">(url)</span>:</span></div><div class="line">    <span class="string">"""获取页面 html 文件并用 BeautifulSoup 解析出图片链接"""</span></div><div class="line"></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">with</span> aiohttp.Timeout(<span class="number">40</span>):</div><div class="line">            print(<span class="string">'正在获取页面 %s'</span> % url)</div><div class="line">            r = <span class="keyword">yield</span> <span class="keyword">from</span> aiohttp.request(<span class="string">'GET'</span>, url, headers=header)</div><div class="line">            print(<span class="string">'获取页面成功 %s'</span> % url)</div><div class="line">            t = <span class="keyword">yield</span> <span class="keyword">from</span> r.text(encoding=<span class="string">'gbk'</span>)</div><div class="line">            soup = BeautifulSoup(t, <span class="string">"html.parser"</span>)</div><div class="line">            dir = create_directory(url, soup)</div><div class="line">            links = collect_picture_link(soup)</div><div class="line">            <span class="keyword">for</span> picture_link <span class="keyword">in</span> links:</div><div class="line">                <span class="keyword">yield</span> <span class="keyword">from</span> download_picture(picture_link, dir, header)</div><div class="line">    <span class="keyword">except</span> asyncio.TimeoutError:</div><div class="line">        print(<span class="string">'获取页面超时 %s'</span> % url)</div><div class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">        <span class="keyword">raise</span> e</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></div><div class="line">    tasks = []</div><div class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urls():</div><div class="line">        tasks.append(get_html(url))</div><div class="line">    loop = asyncio.get_event_loop()</div><div class="line">    loop.run_until_complete(asyncio.wait(tasks))</div><div class="line">    loop.close()</div><div class="line">    print(<span class="string">'所有图片下载完成!'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    run()</div></pre></td></tr></table></figure>
+<p>由于异步用在 IO 这种耗时的操作才有意义，因此只需对程序中涉及到网络通信的部分重写。</p>
+<p><strong>爬虫运行的流程：</strong></p>
+<p>爬虫先获取页面的 HTML 文件<code>get_html()</code> —&gt; 解析文件中的图片链接 —&gt; 用图片链接直接获取图片文件<code>download_picture()</code> —&gt; 保存图片</p>
+<p>使用异步后，爬取图片的效率提升相当的明显，以前下载 50 个页面大约耗时 30 分钟，现在 1 分钟内就能下完，有兴趣的朋友可以试试。</p>
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a href="https://github.com/wish007/crawler" target="_blank" rel="external">GitHub - wish007/crawler</a></p>
+<p>文件名：meizitu_asynchronous.py</p>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432090954004980bd351f2cd4cc18c9e6c06d855c498000" target="_blank" rel="external">asyncio – 廖雪峰</a></li>
+<li><a href="https://docs.python.org/3.4/library/asyncio.html#module-asyncio" target="_blank" rel="external">asyncio – Python 官网</a></li>
+<li><a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014320981492785ba33cc96c524223b2ea4e444077708d000" target="_blank" rel="external">aiohttp – 廖雪峰</a></li>
+<li><a href="http://aiohttp.readthedocs.io/en/stable/" target="_blank" rel="external">aiohttp – aiohttp 官网</a></li>
+<li><a href="https://www.zhihu.com/question/19732473" target="_blank" rel="external">怎样理解阻塞非阻塞与同步异步的区别？</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/asyncio/" rel="tag">#asyncio</a>
+          
+            <a href="/tags/aiohttp/" rel="tag">#aiohttp</a>
+          
+            <a href="/tags/coroutine/" rel="tag">#coroutine</a>
+          
+            <a href="/tags/异步/" rel="tag">#异步</a>
+          
+            <a href="/tags/爬虫/" rel="tag">#爬虫</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/" rel="next" title="搭建Django博客（8）部署Django博客到VPS">
+                <i class="fa fa-chevron-left"></i> 搭建Django博客（8）部署Django博客到VPS
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/25/使用asyncio和aiohttp实现异步IO/"
+           data-title="使用asyncio和aiohttp实现异步IO" data-url="http://yoursite.com/2017/02/25/使用asyncio和aiohttp实现异步IO/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wish007" />
+          <p class="site-author-name" itemprop="name">wish007</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wish007" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#asyncio"><span class="nav-number">1.</span> <span class="nav-text">asyncio</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#aiohttp"><span class="nav-number">2.</span> <span class="nav-text">aiohttp</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异步-IO"><span class="nav-number">3.</span> <span class="nav-text">异步 IO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目地址"><span class="nav-number">4.</span> <span class="nav-text">项目地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文档"><span class="nav-number">5.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wish007</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"wish007"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

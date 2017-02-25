@@ -238,6 +238,131 @@
             
               
                 
+                <a class="post-title-link" href="/2017/02/25/使用asyncio和aiohttp实现异步IO/" itemprop="url">
+                  使用asyncio和aiohttp实现异步IO
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-25T20:36:18+08:00" content="2017-02-25">
+              2017-02-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/25/使用asyncio和aiohttp实现异步IO/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/25/使用asyncio和aiohttp实现异步IO/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="asyncio"><a href="#asyncio" class="headerlink" title="asyncio"></a>asyncio</h1><p>asyncio是 Python 3.4 中引入的标准库，直接内置了对异步IO的支持。</p>
+<p>asyncio 的编程模型就是一个消息循环，从 asyncio 模块中直接获取一个<code>EventLoop</code>的引用，然后把需要执行的协程扔到<code>EventLoop</code>中执行，就实现了异步IO。</p>
+<p>下面是来自于 Python 官方文档的例子（请使用 Python3.4 运行），我对它做了一点修改，增加了 2个任务，方便更好地理解 <a href="https://docs.python.org/3.4/library/asyncio-task.html#example-hello-world-coroutine">链接&gt;&gt;&gt;</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> asyncio</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute</span><span class="params">(x, y)</span>:</span></div><div class="line">    print(<span class="string">"Compute %s + %s ..."</span> % (x, y))</div><div class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> asyncio.sleep(<span class="number">2.0</span>)</div><div class="line">    <span class="keyword">return</span> x + y</div><div class="line"></div><div class="line"><span class="meta">@asyncio.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_sum</span><span class="params">(x, y)</span>:</span></div><div class="line">    result = <span class="keyword">yield</span> <span class="keyword">from</span> compute(x, y)</div><div class="line">    print(<span class="string">"%s + %s = %s"</span> % (x, y, result))</div><div class="line"></div><div class="line">loop = asyncio.get_event_loop()</div><div class="line">tasks = [print_sum(<span class="number">1</span>, <span class="number">2</span>), print_sum(<span class="number">3</span>, <span class="number">4</span>), print_sum(<span class="number">5</span>, <span class="number">6</span>)]</div><div class="line">loop.run_until_complete(asyncio.wait(tasks))</div><div class="line">loop.close()</div><div class="line"></div><div class="line"><span class="comment"># OUTPUT</span></div><div class="line">Compute <span class="number">3</span> + <span class="number">4</span> ...</div><div class="line">Compute <span class="number">5</span> + <span class="number">6</span> ...</div><div class="line">Compute <span class="number">1</span> + <span class="number">2</span> ...</div><div class="line"><span class="comment"># 大约 1 秒以后</span></div><div class="line"><span class="number">3</span> + <span class="number">4</span> = <span class="number">7</span></div><div class="line"><span class="number">5</span> + <span class="number">6</span> = <span class="number">11</span></div><div class="line"><span class="number">1</span> + <span class="number">2</span> = <span class="number">3</span></div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/25/使用asyncio和aiohttp实现异步IO/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/02/02/搭建Django博客（8）部署Django博客到VPS/" itemprop="url">
                   搭建Django博客（8）部署Django博客到VPS
                 </a>
@@ -721,136 +846,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" itemprop="url">
-                  模拟登陆无线路由器（TL-WDR5600）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-02T22:16:28+08:00" content="2016-11-02">
-              2016-11-02
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/模拟登陆无线路由器（TL-WDR5600）/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h1><p>最近对模拟登录很感兴趣，因为很多事情都需要登录了才能做，利用程序实现自动化能做到许多十分有趣的事情。</p>
-<p>我已经打手头上这台 TP-LINK 的 WDR5600 主意很久了，趁着最近在学习 HTTP ，正好实现以前的一些想法。</p>
-<h1 id="GitHub-Repository"><a href="#GitHub-Repository" class="headerlink" title="GitHub Repository"></a>GitHub Repository</h1><p><a href="https://github.com/wish007/router">GitHub - wish007/router</a></p>
-<h1 id="Library"><a href="#Library" class="headerlink" title="Library"></a>Library</h1><ul>
-<li><a href="http://docs.python-requests.org/zh_CN/latest/">Requests</a> ：HTTP for Humans ，涉及到 HTTP 怎能少了它</li>
-<li><a href="https://docs.python.org/3.5/library/json.html">json</a>：JSON 数据格式的编码和解码</li>
-<li><a href="https://docs.python.org/3.5/library/urllib.parse.html">urllib.parse</a>：对 URL 编码进行解码</li>
-<li>Chrome开发者工具：调试 HTTP 请求、JavaScript 的利器</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/02/模拟登陆无线路由器（TL-WDR5600）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -896,7 +891,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -913,7 +908,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
